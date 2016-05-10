@@ -1,0 +1,19 @@
+{
+    "extends": [
+        "eslint-config-nfl/base",
+        "eslint-config-nfl/rules/strict",
+        "eslint-config-nfl/rules/react"
+    ],
+    "plugins": [
+        "import",
+        "react"
+    ],
+    "env": {
+        "browser": true,
+        "mocha": true
+    },
+    "globals": {
+        "expect": true,
+        "sinon": true
+    }
+}

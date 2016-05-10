@@ -1,0 +1,641 @@
+/* eslint-disable react/no-multi-comp */
+import React, {Component, PropTypes} from "react";
+import ReactTestUtils from "react-addons-test-utils";
+import Bling from "../src/Bling";
+import Events from "../src/Events";
+import {pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
+import {gptVersion, pubadsVersion} from "../src/utils/apiList";
+
+describe("Bling", () => {
+    let googletag;
+    const stubs = [];
+
+    beforeEach(() => {
+        Bling.configure({renderWhenViewable: false});
+        Bling.createTestManager();
+        googletag = Bling._adManager.googletag;
+    });
+
+    afterEach(() => {
+        stubs.forEach(stub => {
+            stub.restore();
+        });
+    });
+
+    it("throws when either slotSize or sizeMapping is missing", () => {
+        expect(() => {
+            ReactTestUtils.renderIntoDocument(
+                <Bling adUnitPath="/4595/nfl.test.open" />
+            );
+        }).to.throw("Either 'slotSize' or 'sizeMapping' prop needs to be set.");
+    });
+
+    it("initially renders empty div with style", () => {
+        const renderer = ReactTestUtils.createRenderer();
+        renderer.render(<Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />);
+        const result = renderer.getRenderOutput();
+        expect(result.type).to.equal("div");
+        expect(result.props.style).to.eql({width: 728, height: 90});
+    });
+
+    it("returns gpt version", (done) => {
+        Bling.once(Events.READY, () => {
+            expect(Bling.getGPTVersion()).to.equal(gptVersion);
+            done();
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("returns pubads version", (done) => {
+        Bling.once(Events.READY, () => {
+            expect(Bling.getPubadsVersion()).to.equal(pubadsVersion);
+            done();
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("accepts syncCorrelator", (done) => {
+        const render = sinon.stub(Bling._adManager, "render", function () {
+            expect(this._syncCorrelator).to.be.true;
+            render.restore();
+            done();
+        });
+
+        Bling.syncCorrelator();
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("accepts pubads API", (done) => {
+        const apiStubs = {};
+        pubadsAPI.forEach(method => {
+            apiStubs[method] = sinon.stub(googletag.pubads(), method);
+        });
+
+        Bling.once(Events.RENDER, () => {
+            APIToCallBeforeServiceEnabled.forEach(method => {
+                expect(Bling._adManager[`_${method}`]).to.be.true;
+            });
+            Object.keys(apiStubs).forEach(method => {
+                const stub = apiStubs[method];
+                expect(stub.calledOnce).to.be.true;
+                if (method === "collapseEmptyDivs") {
+                    expect(stub.calledWith(true)).to.be.true;
+                } else if (method === "setTargeting") {
+                    expect(stub.calledWith("key", "value")).to.be.true;
+                }
+                sinon.restore(stub);
+            });
+            done();
+        });
+
+        pubadsAPI.forEach(method => {
+            let args = [];
+            if (method === "collapseEmptyDivs") {
+                args = [true];
+            } else if (method === "setTargeting") {
+                args = ["key", "value"];
+            }
+            Bling[method](...args);
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("fires once event", (done) => {
+        const events = Object.keys(Events).map(key => Events[key]);
+
+        function afterReady() {
+            Bling.once(Events.READY, () => {
+                done();
+            });
+        }
+
+        events.forEach(event => {
+            Bling.once(event, () => {
+                events.splice(events.indexOf(event), 1);
+                if (events.length === 0) {
+                    afterReady();
+                }
+            });
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("fires on event", (done) => {
+        const events = Object.keys(Events).map(key => Events[key]);
+
+        function afterReady() {
+            Bling.on(Events.READY, () => {
+                Bling.removeAllListeners();
+                done();
+            });
+        }
+
+        events.forEach(event => {
+            Bling.on(event, () => {
+                events.splice(events.indexOf(event), 1);
+                if (events.length === 0) {
+                    afterReady();
+                }
+            });
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("removes event", (done) => {
+        const spy = sinon.spy();
+        Bling.on(Events.RENDER, spy);
+        Bling.removeListener(Events.RENDER, spy);
+
+        Bling.once(Events.SLOT_RENDER_ENDED, () => {
+            expect(spy.calledOnce).to.be.false;
+            done();
+        });
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
+    it("refreshes ads", () => {
+        const refresh = sinon.stub(Bling._adManager, "refresh");
+        const slots = [];
+        const options = {};
+
+        Bling.refresh(slots, options);
+
+        expect(refresh.calledOnce).to.be.true;
+        expect(refresh.calledWith(slots, options)).to.be.true;
+        refresh.restore();
+    });
+
+    it("clears ads", () => {
+        const clear = sinon.stub(Bling._adManager, "clear");
+        const slots = [];
+
+        Bling.clear(slots);
+
+        expect(clear.calledOnce).to.be.true;
+        expect(clear.calledWith(slots)).to.be.true;
+        clear.restore();
+    });
+
+    it("updates correlator", () => {
+        const updateCorrelator = sinon.stub(Bling._adManager, "updateCorrelator");
+
+        Bling.updateCorrelator();
+
+        expect(updateCorrelator.calledOnce).to.be.true;
+        updateCorrelator.restore();
+    });
+
+    it("reflects adUnitPath props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getAdUnitPath()).to.equal("/4595/nfl.test.open");
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+            />
+        );
+    });
+
+    it("reflects slotSize props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getSizes()).to.eql([300, 250]);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+            />
+        );
+    });
+
+    it("reflects sizeMapping props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getSizes()).to.eql([[[0, 0], [320, 50]], [[750, 200], [728, 90]], [[1050, 200], [1024, 120]]]);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                sizeMapping={[
+                    {viewport: [0, 0], slot: [320, 50]},
+                    {viewport: [750, 200], slot: [728, 90]},
+                    {viewport: [1050, 200], slot: [1024, 120]}
+                ]}
+            />
+        );
+    });
+
+    it("reflects targeting props to adSlot", (done) => {
+        const targeting = {t1: "v1", t2: [1, 2, 3]};
+
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getTargetingKeys()).to.eql(["t1", "t2"]);
+            expect(adSlot.getTargeting("t1")).to.equal(targeting.t1);
+            expect(adSlot.getTargeting("t2")).to.eql(targeting.t2);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+                targeting={targeting}
+            />
+        );
+    });
+
+    it("reflects collapseEmptyDiv props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            expect(ads[0].adSlot.getCollapseEmptyDiv()).to.be.true;
+            expect(ads[1].adSlot.getCollapseEmptyDiv()).to.be.false;
+            done();
+        });
+
+        class Wrapper extends Component {
+            static propTypes = {
+                children: PropTypes.node
+            }
+            render() {
+                return (
+                    <div>{this.props.children}</div>
+                );
+            }
+        }
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Wrapper>
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    collapseEmptyDiv={[true, true]}
+                />
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    collapseEmptyDiv={false}
+                />
+            </Wrapper>
+        );
+        const ads = ReactTestUtils.scryRenderedComponentsWithType(instance, Bling);
+    });
+
+    it("reflects attributes props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.get("attr1")).to.equal("val1");
+            expect(adSlot.get("attr2")).to.equal("val2");
+            expect(adSlot.getAttributeKeys()).to.eql(["attr1", "attr2"]);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+                attributes={{attr1: "val1", attr2: "val2"}}
+            />
+        );
+    });
+
+    it("reflects categoryExclusion props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            expect(ads[0].adSlot.getCategoryExclusions()).to.eql(["Airline"]);
+            expect(ads[1].adSlot.getCategoryExclusions()).to.eql(["Airline"]);
+            done();
+        });
+
+        class Wrapper extends Component {
+            static propTypes = {
+                children: PropTypes.node
+            }
+            render() {
+                return (
+                    <div>{this.props.children}</div>
+                );
+            }
+        }
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Wrapper>
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    categoryExclusion="Airline"
+                />
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    categoryExclusion={["Airline"]}
+                />
+            </Wrapper>
+        );
+        const ads = ReactTestUtils.scryRenderedComponentsWithType(instance, Bling);
+    });
+
+    it("reflects clickUrl props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getClickUrl()).to.equal("clickUrl");
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+                clickUrl="clickUrl"
+            />
+        );
+    });
+
+    it("reflects companionAdService props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            const services = adSlot.getServices();
+            const companionAdService = services.filter(service => !!service.setRefreshUnfilledSlots)[0];
+            expect(companionAdService._enableSyncLoading).to.be.true;
+            expect(companionAdService._refreshUnfilledSlots).to.be.true;
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+                companionAdService={{enableSyncLoading: true, refreshUnfilledSlots: true}}
+            />
+        );
+    });
+
+    it("reflects outOfPage props to adSlot", (done) => {
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot.getSizes()).to.eql([1, 1]);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                outOfPage={true}
+            />
+        );
+    });
+
+    it("renders static ad", (done) => {
+        const content = `<a href="www.mydestinationsite.com"><img src="www.mysite.com/img.png"></img></a>`;
+
+        Bling.once(Events.RENDER, () => {
+            const adSlot = instance.adSlot;
+            expect(adSlot._content).to.equal(content);
+            done();
+        });
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+                content={content}
+            />
+        );
+    });
+
+    it("does not render ad when renderWhenViewable prop is set to true and the component is not in viewport", (done) => {
+        const isInViewport = sinon.stub(Bling._adManager, "isInViewport", () => false);
+
+        Bling.once(Events.SLOT_RENDER_ENDED, event => {
+            expect(event.slot).to.equal(ads[1].adSlot);
+            isInViewport.restore();
+            done();
+        });
+
+        function onScriptLoaded() {
+            expect(ads[0].state.inViewport).to.be.false;
+        }
+
+        class Wrapper extends Component {
+            static propTypes = {
+                children: PropTypes.node
+            }
+            render() {
+                return (
+                    <div>{this.props.children}</div>
+                );
+            }
+        }
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Wrapper>
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    onScriptLoaded={onScriptLoaded}
+                    renderWhenViewable={true}
+                />
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    renderWhenViewable={false}
+                />
+            </Wrapper>
+        );
+        const ads = ReactTestUtils.scryRenderedComponentsWithType(instance, Bling);
+    });
+
+    it("renders ad as soon as the component gets in the viewport", (done) => {
+        const isInViewport = sinon.stub(Bling._adManager, "isInViewport", () => false);
+
+        Bling.once(Events.SLOT_RENDER_ENDED, event => {
+            expect(event.slot).to.equal(ads[0].adSlot);
+            done();
+        });
+
+        function onScriptLoaded() {
+            expect(ads[0].state.inViewport).to.be.false;
+
+            // simulate resize/scroll
+            isInViewport.restore();
+            Bling._adManager._foldCheck();
+        }
+
+        class Wrapper extends Component {
+            static propTypes = {
+                children: PropTypes.node
+            }
+            render() {
+                return (
+                    <div>{this.props.children}</div>
+                );
+            }
+        }
+
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Wrapper>
+                <Bling
+                    adUnitPath="/4595/nfl.test.open"
+                    slotSize={[300, 250]}
+                    onScriptLoaded={onScriptLoaded}
+                />
+            </Wrapper>
+        );
+        const ads = ReactTestUtils.scryRenderedComponentsWithType(instance, Bling);
+    });
+
+    it("refreshes ad when refreshable prop changes", (done) => {
+        let count = 0;
+
+        Bling.syncCorrelator();
+
+        class Wrapper extends Component {
+            state = {
+                targeting: {prop: "val"}
+            }
+            onSlotRenderEnded = event => {
+                if (count === 0) {
+                    expect(event.slot.getTargeting("prop")).to.equal("val");
+                    this.setState({
+                        targeting: {prop: "val2"}
+                    });
+                    count++;
+                } else {
+                    expect(event.slot.getTargeting("prop")).to.equal("val2");
+                    done();
+                }
+            }
+            render() {
+                const {targeting} = this.state;
+                return (
+                    <Bling
+                        adUnitPath="/4595/nfl.test.open"
+                        slotSize={[300, 250]}
+                        targeting={targeting}
+                        onSlotRenderEnded={this.onSlotRenderEnded}
+                    />
+                );
+            }
+        }
+
+        ReactTestUtils.renderIntoDocument(
+            <Wrapper />
+        );
+    });
+
+    it("refreshes ad when refreshableProps changes w/o sync correlator", (done) => {
+        let count = 0;
+
+        Bling.syncCorrelator(false);
+
+        class Wrapper extends Component {
+            state = {
+                targeting: {prop: "val"}
+            }
+            onSlotRenderEnded = event => {
+                if (count === 0) {
+                    expect(event.slot.getTargeting("prop")).to.equal("val");
+                    this.setState({
+                        targeting: {prop: "val2"}
+                    });
+                    count++;
+                } else {
+                    expect(event.slot.getTargeting("prop")).to.equal("val2");
+                    done();
+                }
+            }
+            render() {
+                const {targeting} = this.state;
+                return (
+                    <Bling
+                        adUnitPath="/4595/nfl.test.open"
+                        slotSize={[300, 250]}
+                        targeting={targeting}
+                        onSlotRenderEnded={this.onSlotRenderEnded}
+                    />
+                );
+            }
+        }
+
+        ReactTestUtils.renderIntoDocument(
+            <Wrapper />
+        );
+    });
+
+    it("re-renders ad when reRenderProps changes", (done) => {
+        let count = 0;
+
+        Bling.syncCorrelator();
+
+        class Wrapper extends Component {
+            state = {
+                adUnitPath: "/4595/nfl.test.open"
+            }
+            onSlotRenderEnded = event => {
+                if (count === 0) {
+                    expect(event.slot.getAdUnitPath()).to.equal("/4595/nfl.test.open");
+                    this.setState({
+                        adUnitPath: "/4595/nfl.test.open/new"
+                    });
+                    count++;
+                } else {
+                    expect(event.slot.getAdUnitPath()).to.equal("/4595/nfl.test.open/new");
+                    done();
+                }
+            }
+            render() {
+                const {adUnitPath} = this.state;
+                return (
+                    <Bling
+                        adUnitPath={adUnitPath}
+                        slotSize={[300, 250]}
+                        onSlotRenderEnded={this.onSlotRenderEnded}
+                    />
+                );
+            }
+        }
+
+        ReactTestUtils.renderIntoDocument(
+            <Wrapper />
+        );
+    });
+
+    it("removes itself from registry when unmounted", () => {
+        const instance = ReactTestUtils.renderIntoDocument(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                slotSize={[300, 250]}
+            />
+        );
+        instance.componentWillUnmount();
+        expect(Bling._adManager.getMountedInstances()).to.have.length(0);
+    });
+});

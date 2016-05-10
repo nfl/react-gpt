@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015-without-strict", "stage-0", "react"],
+  "plugins": [
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "examples": {
+      "plugins": [
+        ["babel-plugin-webpack-alias", {"config": "./examples/webpack.config.server.js"}]
+      ]
+    }
+  }
+}
