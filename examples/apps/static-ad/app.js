@@ -21,17 +21,17 @@ class App extends Component {
         return (
             <div>
                 <button
-                    onClick={this.onClick}
                     style={styles.button}
+                    onClick={this.onClick}
                 >
                     Change content
                 </button>
                 <div style={styles.lb}>
                     <Gpt
-                        style={styles.adBorder}
                         adUnitPath="/4595/nfl.test.open"
-                        slotSize={[728, 90]}
                         content={`<a href="http://www.nfl.com" target="_blank"><img src="https://placeholdit.imgix.net/~text?txtsize=33&bg=${color}&txt=728%C3%9790&w=728&h=90"></img></a>`}
+                        slotSize={[728, 90]}
+                        style={styles.adBorder}
                     />
                 </div>
             </div>

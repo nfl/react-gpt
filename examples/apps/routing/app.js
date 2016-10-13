@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, {Component, PropTypes} from "react";
-import createHistory from "history/lib/createHashHistory";
+import createHistory from "history/createHashHistory";
 import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import "../log";
 import Home from "./home";
@@ -17,9 +17,12 @@ class App extends Component {
         children: PropTypes.node
     }
 
+    createHref(path) {
+        return `${window.location.origin}${window.location.pathname}#${path}`;
+    }
+
     render() {
-        const {location, history, children} = this.props;
-        const createHref = history.createHref;
+        const {location, children} = this.props;
         const adUnitPath = `/4595/nfl.test.open${location.pathname}`;
         const props = {
             ...this.props,
@@ -29,9 +32,9 @@ class App extends Component {
         return (
             <div>
                 <ul>
-                    <li><a href={createHref("/Travel/Europe")}>Home</a></li>
-                    <li><a href={createHref("/Travel/Europe/France")}>France</a></li>
-                    <li><a href={createHref("/Travel/Europe/Spain")}>Spain</a></li>
+                    <li><a href={this.createHref("/Travel/Europe")}>Home</a></li>
+                    <li><a href={this.createHref("/Travel/Europe/France")}>France</a></li>
+                    <li><a href={this.createHref("/Travel/Europe/Spain")}>Spain</a></li>
                 </ul>
                 <div style={styles.topAd}>
                     <Gpt

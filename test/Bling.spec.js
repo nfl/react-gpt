@@ -297,13 +297,13 @@ describe("Bling", () => {
             <Wrapper>
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
-                    slotSize={[300, 250]}
                     collapseEmptyDiv={[true, true]}
+                    slotSize={[300, 250]}
                 />
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
-                    slotSize={[300, 250]}
                     collapseEmptyDiv={false}
+                    slotSize={[300, 250]}
                 />
             </Wrapper>
         );
@@ -322,8 +322,8 @@ describe("Bling", () => {
         const instance = ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
-                slotSize={[300, 250]}
                 attributes={{attr1: "val1", attr2: "val2"}}
+                slotSize={[300, 250]}
             />
         );
     });
@@ -350,13 +350,13 @@ describe("Bling", () => {
             <Wrapper>
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
-                    slotSize={[300, 250]}
                     categoryExclusion="Airline"
+                    slotSize={[300, 250]}
                 />
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
-                    slotSize={[300, 250]}
                     categoryExclusion={["Airline"]}
+                    slotSize={[300, 250]}
                 />
             </Wrapper>
         );
@@ -373,8 +373,8 @@ describe("Bling", () => {
         const instance = ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
-                slotSize={[300, 250]}
                 clickUrl="clickUrl"
+                slotSize={[300, 250]}
             />
         );
     });
@@ -392,8 +392,8 @@ describe("Bling", () => {
         const instance = ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
-                slotSize={[300, 250]}
                 companionAdService={{enableSyncLoading: true, refreshUnfilledSlots: true}}
+                slotSize={[300, 250]}
             />
         );
     });
@@ -425,8 +425,8 @@ describe("Bling", () => {
         const instance = ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
-                slotSize={[300, 250]}
                 content={content}
+                slotSize={[300, 250]}
             />
         );
     });
@@ -459,14 +459,14 @@ describe("Bling", () => {
             <Wrapper>
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
+                    renderWhenViewable={true}
                     slotSize={[300, 250]}
                     onScriptLoaded={onScriptLoaded}
-                    renderWhenViewable={true}
                 />
                 <Bling
                     adUnitPath="/4595/nfl.test.open"
-                    slotSize={[300, 250]}
                     renderWhenViewable={false}
+                    slotSize={[300, 250]}
                 />
             </Wrapper>
         );

@@ -71,8 +71,8 @@ class App extends Component {
         while (contentCnt < page * 3) { // eslint-disable-line no-unmodified-loop-condition
             contents.push(
                 <Content
-                    key={contentCnt}
                     index={contentCnt % 3}
+                    key={contentCnt}
                     targeting={{
                         ...targeting,
                         count: `${Math.floor(contentCnt / 3)}`
@@ -85,10 +85,10 @@ class App extends Component {
             <div>
                 <div style={styles.lb}>
                     <Gpt
-                        id="top-ad"
-                        style={styles.adBorder}
                         adUnitPath="/4595/nfl.test.open"
+                        id="top-ad"
                         slotSize={this.state.size}
+                        style={styles.adBorder}
                         targeting={targeting}
                     />
                 </div>

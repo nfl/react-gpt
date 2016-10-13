@@ -19,8 +19,8 @@ class App extends Component {
         return (
             <div>
                 <button
-                    onClick={this.onClick}
                     style={styles.button}
+                    onClick={this.onClick}
                 >
                     Change ad unit path (navigate to different page)
                 </button>

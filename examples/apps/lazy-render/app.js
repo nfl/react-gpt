@@ -15,8 +15,8 @@ class App extends Component {
         return (
             <div>
                 <button
-                    onClick={this.onClick}
                     style={styles.button}
+                    onClick={this.onClick}
                 >
                     Re-render
                 </button>
@@ -24,20 +24,20 @@ class App extends Component {
                     <div style={styles.content} />
                     <div style={styles.lb}>
                         <Gpt
-                            style={styles.adBorder}
                             adUnitPath="/4595/nfl.test.open"
                             slotSize={[728, 90]}
+                            style={styles.adBorder}
                             targeting={{test: "responsive"}}
                         />
                     </div>
                 </div>
                 <div style={styles.mr}>
                     <Gpt
-                        style={styles.adBorder}
                         adUnitPath="/4595/nfl.test.open"
                         slotSize={[300, 250]}
-                        viewableThreshold={1}
+                        style={styles.adBorder}
                         targeting={{test: "responsive"}}
+                        viewableThreshold={1}
                     />
                 </div>
             </div>

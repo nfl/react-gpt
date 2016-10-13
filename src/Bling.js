@@ -722,7 +722,7 @@ class Bling extends Component {
         }
         this._divId = id || Bling._adManager.generateDivId();
 
-        return <div id={this._divId} style={style}></div>;
+        return <div id={this._divId} style={style} />;
     }
 }
 
