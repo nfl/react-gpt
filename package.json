@@ -75,7 +75,7 @@
     "mocha": "^2.3.4",
     "phantom": "^2.0.4",
     "querystring": "^0.2.0",
-    "radium": "^0.17.1",
+    "radium": "^0.18.1",
     "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "react-dom": "^15.0.1",
