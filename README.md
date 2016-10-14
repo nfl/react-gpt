@@ -3,6 +3,7 @@
 [![npm package](https://img.shields.io/npm/v/react-gpt.svg?style=flat-square)](https://www.npmjs.org/package/react-gpt)
 [![build status](https://img.shields.io/travis/nfl/react-gpt/master.svg?style=flat-square)](https://travis-ci.org/nfl/react-gpt)
 [![dependency status](https://img.shields.io/david/nfl/react-gpt.svg?style=flat-square)](https://david-dm.org/nfl/react-gpt)
+[![codecov.io](https://img.shields.io/codecov/c/github/nfl/react-gpt/master.svg?style=flat-square)](https://codecov.io/github/nfl/react-gpt?branch=master)
 
 A [React](https://github.com/facebook/react) component for [Google Publisher Tags](https://developers.google.com/doubleclick-gpt/?hl=en).
 
