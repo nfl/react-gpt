@@ -46,50 +46,50 @@ class App extends Component {
         return (
             <StyleRoot>
                 <Button
-                    onClick={this.onClick}
                     params="disableInitialLoad"
+                    onClick={this.onClick}
                 >
                     Disable Initial Load
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="refresh"
+                    onClick={this.onClick}
                 >
                     Refresh
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="adUnitPath"
+                    onClick={this.onClick}
                 >
                      Change adUnitPath
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="targeting"
+                    onClick={this.onClick}
                 >
                     Change targeting
                 </Button>
                 <div style={styles.lb}>
                     <Gpt
-                        style={styles.adBorder}
                         adUnitPath={adUnitPath}
-                        targeting={targeting}
                         slotSize={[728, 90]}
+                        style={styles.adBorder}
+                        targeting={targeting}
                     />
                 </div>
                 <div style={styles.main}>
                     <div style={styles.mr}>
                         <Gpt
-                            style={styles.adBorder}
                             adUnitPath="/4595/nfl.test.open"
                             slotSize={[300, 250]}
+                            style={styles.adBorder}
                         />
                     </div>
                     <div style={styles.ws}>
                         <Gpt
-                            style={styles.adBorder}
                             adUnitPath="/4595/nfl.test.open"
                             slotSize={[160, 600]}
+                            style={styles.adBorder}
                         />
                     </div>
                 </div>

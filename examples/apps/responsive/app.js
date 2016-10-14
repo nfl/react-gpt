@@ -60,26 +60,26 @@ class App extends Component {
         return (
             <div>
                 <Button
-                    onClick={this.onClick}
                     params="refresh"
+                    onClick={this.onClick}
                 >
                     Refresh
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="adUnitPath"
+                    onClick={this.onClick}
                 >
                     Change adUnitPath
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="targeting"
+                    onClick={this.onClick}
                 >
                     Change targeting
                 </Button>
                 <Button
-                    onClick={this.onClick}
                     params="size"
+                    onClick={this.onClick}
                 >
                     Change size mapping
                 </Button>

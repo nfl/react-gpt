@@ -17,8 +17,8 @@ class Page extends Component {
                 <div style={styles.container}>
                     <Gpt
                         adUnitPath={adUnitPath}
-                        targeting={{test: "responsive"}}
                         slotSize={[300, 250]}
+                        targeting={{test: "responsive"}}
                     />
                 </div>
             </div>
