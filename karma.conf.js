@@ -32,6 +32,9 @@ module.exports = function (config) {
                 subdir: "html"
             }, {
                 type: "text"
+            }, {
+                type: "lcovonly",
+                subdir: "."
             }]
         },
 
@@ -83,4 +86,8 @@ module.exports = function (config) {
 
         singleRun: false
     });
+    
+    if (process.env.CI) {
+        require("./karma.conf.ci.js")(config);
+    }
 };
