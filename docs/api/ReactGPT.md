@@ -8,7 +8,7 @@ A React component which renders [GPT](https://support.google.com/dfp_sb/answer/1
 
 `Bling` tries to cover as much [Slot API](https://developers.google.com/doubleclick-gpt/reference#googletagslot) as possible as `props`.
 
-- `is`(optional) - An optional string to be used as container div id.
+- `id`(optional) - An optional string to be used as container div id.
 - `adUnitPath`(required) - An string indicating ad unit path which will be used to create an ad slot.
 - `targeting`(optional) - An optional object which includes ad targeting key-value pairs.
 - `slotSize`(optional) - An optional array of width and height size for the ad slot. This will be preceded by the sizeMapping if specified.
