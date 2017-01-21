@@ -11,7 +11,7 @@ A React component which renders [GPT](https://support.google.com/dfp_sb/answer/1
 - `id`(optional) - An optional string to be used as container div id.
 - `adUnitPath`(required) - An string indicating ad unit path which will be used to create an ad slot.
 - `targeting`(optional) - An optional object which includes ad targeting key-value pairs.
-- `slotSize`(optional) - An optional array of width and height size for the ad slot. This will be preceded by the sizeMapping if specified.
+- `slotSize`(optional) - An optional prop to specify the ad slot size which accepts [googletag.GeneralSize](https://developers.google.com/doubleclick-gpt/reference#googletag.GeneralSize) as a type. This will be preceded by the sizeMapping if specified.
 - `sizeMapping`(optional) - An optional array of object which contains an array of viewport size and slot size. This needs to be set if the ad needs to serve different ad sizes per different viewport sizes (responsive ad). Setting the `slot` to any dimension that's not configured in DFP results in rendering an empty ad. The ad slot size which is provided for the viewport size of [0, 0] will be used as default ad size if none of viewport size matches.
 - `outOfPage`(optional) - An optional flag to indicate whether an ad slot should be out-of-page slot.
 - `companionAdService`(optional) - An optional flag to indicate whether companion ad service should be enabled for the ad. If an object is passed, it takes as a configuration expecting `enableSyncLoading` or `refreshUnfilledSlots`.
