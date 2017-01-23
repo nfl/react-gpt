@@ -41,7 +41,7 @@ class Bling extends Component {
          */
         targeting: PropTypes.object,
         /**
-         * An optional array of width and height size for the ad slot. Additionally it accepts `fluid` for native ads.
+         * An optional prop to specify the ad slot size which accepts [googletag.GeneralSize](https://developers.google.com/doubleclick-gpt/reference#googletag.GeneralSize) as a type.
          * This will be preceded by the sizeMapping if specified.
          *
          * @property slotSize
