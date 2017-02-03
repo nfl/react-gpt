@@ -1,13 +1,14 @@
 /* eslint-disable react/sort-comp */
 import React, {Component} from "react";
 import Radium from "radium";
+import createHistory from "history/createHashHistory";
 import debounce from "debounce";
-import {Bling as Gpt, Events} from "react-gpt"; // eslint-disable-line import/no-unresolved
+import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import "../log";
-import Content from "./content";
+import Page from "./page";
 import styles from "./styles";
 
-Gpt.syncCorrelator();
+// implementation based of https://support.google.com/dfp_premium/answer/4578089?hl=en#infiniteContents
 Gpt.enableSingleRequest();
 Gpt.disableInitialLoad();
 
@@ -17,72 +18,58 @@ class App extends Component {
         page: 1,
         size: [728, 90]
     }
-    time = 0
     componentDidMount() {
+        this.history = createHistory();
+        this.history.replace("/");
         window.addEventListener("scroll", this.onScroll);
         window.addEventListener("resize", this.onScroll);
         this.onScroll();
-        this.startTimer();
-        Gpt.on(Events.RENDER, () => {
-            let changeCorrelator = false;
-            if (this.time >= 30) {
-                changeCorrelator = true;
-                this.startTimer();
-            }
-            Gpt.refresh(null, {changeCorrelator});
-        });
-    }
-    componentDidUpdate() {
-        Gpt.refresh();
     }
     componentWillUnmount() {
         window.removeEventListener("scroll", this.onScroll);
         window.removeEventListener("resize", this.onScroll);
-        this.stopTimer();
     }
     onScroll = debounce(() => {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         if (scrollTop + window.innerHeight >= document.body.clientHeight) {
+            // update correlator if you want to explicitly use different correlator value for each page
+            Gpt.updateCorrelator();
             this.setState({
-                page: ++this.state.page
+                page: this.state.page + 1
             });
         }
+        const pages = this.root.querySelectorAll(".page");
+        Array.from(pages).reverse().some(page => {
+            if (page.offsetTop <= scrollTop) {
+                this.history.push(`/page${page.getAttribute("data-index")}`);
+                return true;
+            }
+            return false;
+        });
     }, 66)
-    startTimer() {
-        this.stopTimer();
-        this.timer = setInterval(() => {
-            this.time++;
-        }, 1000);
+
+    onSlotDisplay= (event) => {
+        const slot = event.slot;
+        Gpt.refresh([slot], {changeCorrelator: false});
     }
-    stopTimer() {
-        if (this.timer) {
-            clearInterval(this.timer);
-            this.time = 0;
-            this.timer = null;
-        }
-    }
+
     render() {
         const {page} = this.state;
-        let contentCnt = 0;
-        const contents = [];
         const targeting = {
             test: "infinitescroll"
         };
-        while (contentCnt < page * 3) { // eslint-disable-line no-unmodified-loop-condition
-            contents.push(
-                <Content
-                    index={contentCnt % 3}
-                    key={contentCnt}
-                    targeting={{
-                        ...targeting,
-                        count: `${Math.floor(contentCnt / 3)}`
-                    }}
-                />
-            );
-            contentCnt++;
-        }
+        const pages = Array.from({length: page}, (_, index) => (
+            <Page
+                key={index}
+                page={index + 1}
+                targeting={targeting}
+                onSlotDisplay={this.onSlotDisplay}
+                onSlotRenderEnded={this.onSlotRenderEnded}
+            />
+        ));
+
         return (
-            <div>
+            <div ref={root => {this.root = root;}}>
                 <div style={styles.lb}>
                     <Gpt
                         adUnitPath="/4595/nfl.test.open"
@@ -90,10 +77,11 @@ class App extends Component {
                         slotSize={this.state.size}
                         style={styles.adBorder}
                         targeting={targeting}
+                        onSlotDisplay={this.onSlotDisplay}
                     />
                 </div>
                 <div style={styles.main}>
-                    {contents}
+                    {pages}
                 </div>
             </div>
         );

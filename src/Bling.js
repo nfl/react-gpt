@@ -2,6 +2,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import invariant from "fbjs/lib/invariant";
+import warning from "fbjs/lib/warning";
 import deepEqual from "deep-equal";
 import hoistStatics from "hoist-non-react-statics";
 import Events from "./Events";
@@ -136,6 +137,12 @@ class Bling extends Component {
          * @property safeFrameConfig
          */
         safeFrameConfig: PropTypes.object,
+        /**
+         * An optional event handler function which is triggered when `slot.display()` is called.
+         *
+         * @property onSlotDisplay
+         */
+        onSlotDisplay: PropTypes.func,
         /**
          * An optional event handler function for `googletag.events.SlotRenderEndedEvent`.
          *
@@ -314,8 +321,11 @@ class Bling extends Component {
      * @param {boolean} value
      * @static
      */
-    static syncCorrelator(value) {
-        Bling._adManager.syncCorrelator(value);
+    static syncCorrelator() {
+        warning(
+            false,
+            "'syncCorrelator' is deprecated, setting this value has no effect and will be removed any time in the next version."
+        );
     }
     /**
      * Trigger re-rendering of all the ads.
@@ -406,26 +416,18 @@ class Bling extends Component {
         const reRenderProps = filterProps(Bling.reRenderProps, this.props, nextProps);
         const shouldRender = !propsEqual(reRenderProps.props, reRenderProps.nextProps);
         const shouldRefresh = !shouldRender && !propsEqual(refreshableProps.props, refreshableProps.nextProps);
-        // console.log(`shouldRefresh: ${shouldRefresh}, shouldRender: ${shouldRender}, isScriptLoaded: ${isScriptLoaded}, syncCorrelator: ${Bling._adManager._syncCorrelator}`);
+        // console.log(`shouldRefresh: ${shouldRefresh}, shouldRender: ${shouldRender}, isScriptLoaded: ${isScriptLoaded}`);
 
         if (shouldRefresh) {
             this.configureSlot(this._adSlot, nextProps);
         }
 
-        if (Bling._adManager._syncCorrelator) {
-            if (shouldRefresh) {
-                Bling._adManager.refresh();
-            } else if (shouldRender || isScriptLoaded) {
-                Bling._adManager.renderAll();
-            }
-        } else {
-            if (shouldRefresh) {
-                this.refresh();
-                return false;
-            }
-            if (shouldRender || isScriptLoaded) {
-                return true;
-            }
+        if (shouldRefresh) {
+            this.refresh();
+            return false;
+        }
+        if (shouldRender || isScriptLoaded) {
+            return true;
         }
 
         return false;
@@ -656,13 +658,8 @@ class Bling extends Component {
         if (content) {
             Bling._adManager.googletag.content().setContent(adSlot, content);
         } else {
-            if (!Bling._adManager._disableInitialLoad && !Bling._adManager._syncCorrelator) {
-                Bling._adManager.updateCorrelator();
-            }
             Bling._adManager.googletag.display(divId);
-            if (Bling._adManager._disableInitialLoad && !Bling._adManager._initialRender) {
-                this.refresh();
-            }
+            Bling._adManager._onEvent("slotDisplay", {slot: this.adSlot});
         }
     }
 
