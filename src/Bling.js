@@ -420,12 +420,10 @@ class Bling extends Component {
 
         if (shouldRefresh) {
             this.configureSlot(this._adSlot, nextProps);
-        }
-
-        if (shouldRefresh) {
             this.refresh();
             return false;
         }
+
         if (shouldRender || isScriptLoaded) {
             return true;
         }

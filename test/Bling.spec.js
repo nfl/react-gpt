@@ -582,7 +582,7 @@ describe("Bling", () => {
         expect(Bling._adManager.getMountedInstances()).to.have.length(0);
     });
 
-    it("setting syncCorrelator doesn not trigger refreshing all slots", (done) => {
+    it("setting syncCorrelator does not trigger refreshing all slots", (done) => {
         let count = 0;
         let refresh;
 
