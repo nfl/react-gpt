@@ -112,6 +112,25 @@ describe("Bling", () => {
         );
     });
 
+    it("can call pubads API multiple times", (done) => {
+        const spy = sinon.stub(googletag.pubads(), "setTargeting");
+
+        Bling.once(Events.RENDER, () => {
+            expect(spy.calledTwice).to.be.true;
+            expect(spy.calledWith("key1", "value1")).to.be.true;
+            expect(spy.calledWith("key2", "value2")).to.be.true;
+            sinon.restore(spy);
+            done();
+        });
+
+        Bling.setTargeting("key1", "value1");
+        Bling.setTargeting("key2", "value2");
+
+        ReactTestUtils.renderIntoDocument(
+            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
+        );
+    });
+
     it("fires once event", (done) => {
         const events = Object.keys(Events).map(key => Events[key]);
 
