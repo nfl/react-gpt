@@ -94,7 +94,7 @@ export class AdManager extends EventEmitter {
             Object.keys(this._pubadsProxyQueue).forEach(method => {
                 if ((this.googletag && !this.googletag.pubadsReady && APIToCallBeforeServiceEnabled.indexOf(method) > -1) ||
                     this.pubadsReady) {
-                    this.pubadsProxy(this._pubadsProxyQueue[method]);
+                    this._pubadsProxyQueue[method].forEach((params) => this.pubadsProxy(params));
                     delete this._pubadsProxyQueue[method];
                 }
             });
@@ -468,7 +468,10 @@ export class AdManager extends EventEmitter {
                     if (!this._pubadsProxyQueue) {
                         this._pubadsProxyQueue = {};
                     }
-                    this._pubadsProxyQueue[method] = params;
+                    if (!this._pubadsProxyQueue[method]) {
+                        this._pubadsProxyQueue[method] = [];
+                    }
+                    this._pubadsProxyQueue[method].push(params);
                 } else {
                     this._callPubads(params);
                 }

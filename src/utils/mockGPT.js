@@ -1,22 +1,24 @@
 import {gptAPI, pubadsAPI, slotAPI, gptVersion, pubadsVersion} from "./apiList";
 import Events from "../Events";
 
-function createMock(list) {
+function createMock(list, obj) {
     return list.reduce((mock, [api, type]) => {
-        if (type === "function") {
-            mock[api] = (...args) => {
-                if (args.length) {
-                    return args[0];
-                }
-                return {};
-            };
-        } else if (type === "boolean") {
-            mock[api] = true;
-        } else {
-            mock[api] = {};
+        if (typeof mock[api] === "undefined") {
+            if (type === "function") {
+                mock[api] = (...args) => {
+                    if (args.length) {
+                        return args[0];
+                    }
+                    return {};
+                };
+            } else if (type === "boolean") {
+                mock[api] = true;
+            } else {
+                mock[api] = {};
+            }
         }
         return mock;
-    }, {});
+    }, obj || {});
 }
 
 function getSize(slot) {
@@ -29,131 +31,129 @@ function getSize(slot) {
     return item;
 }
 
-const SlotMock = function (adUnitPath, size, divId) {
-    this.adUnitPath = adUnitPath;
-    this.size = size;
-    this.divId = divId;
-    this.services = [];
-    this.attributes = {};
-    this.categoryExclusions = [];
-    this._targeting = {};
-};
-SlotMock.prototype = {
-    ...createMock(slotAPI),
+class SlotMock {
+    constructor(adUnitPath, size, divId) {
+        this.adUnitPath = adUnitPath;
+        this.size = size;
+        this.divId = divId;
+        this.services = [];
+        this.attributes = {};
+        this.categoryExclusions = [];
+        this._targeting = {};
+    }
     defineSizeMapping(sizeMapping) {
         this.size = sizeMapping;
         return this;
-    },
+    }
     addService(service) {
         this.services.push(service);
-    },
+    }
     getServices() {
         return this.services;
-    },
+    }
     set(key, value) {
         this.attributes[key] = value;
         return this;
-    },
+    }
     get(key) {
         return this.attributes[key];
-    },
+    }
     getAttributeKeys() {
         return Object.keys(this.attributes);
-    },
+    }
     setCollapseEmptyDiv(collapse, collapseBeforeAdFetch) {
         this.collapseEmptyDiv = collapse;
         this.collapseBeforeAdFetch = collapseBeforeAdFetch;
         return this;
-    },
+    }
     getCollapseEmptyDiv() {
         return this.collapseEmptyDiv;
-    },
+    }
     setClickUrl(clickUrl) {
         this.clickUrl = clickUrl;
         return this;
-    },
+    }
     getClickUrl() {
         return this.clickUrl;
-    },
+    }
     setCategoryExclusion(categoryExclusion) {
         this.categoryExclusions.push(categoryExclusion);
         return this;
-    },
+    }
     getCategoryExclusions() {
         return this.categoryExclusions;
-    },
+    }
     clearCategoryExclusions() {
         this.categoryExclusions = [];
         return this;
-    },
+    }
     setTargeting(key, value) {
         this._targeting[key] = value;
         return this;
-    },
+    }
     getAdUnitPath() {
         return this.adUnitPath;
-    },
+    }
     clearTargeting() {
         this._targeting = {};
         return this;
-    },
+    }
     getTargeting(key) {
         return this._targeting && this._targeting[key];
-    },
+    }
     getTargetingKeys() {
         return this._targeting && Object.keys(this._targeting);
-    },
+    }
     getSizes() {
         return this.size;
-    },
+    }
     getSlotElementId() {
         return this.divId;
     }
-};
+}
+createMock(slotAPI, SlotMock.prototype);
 
-const SizeMappingBuilderMock = function (config = {}) {
-    this.config = config;
-};
-SizeMappingBuilderMock.prototype = {
+class SizeMappingBuilderMock {
+    constructor(config = {}) {
+        this.config = config;
+    }
     addSize(viewportSize, slotSize) {
         if (!this.mapping) {
             this.mapping = [];
         }
         this.mapping.push([viewportSize, slotSize]);
         return this;
-    },
+    }
     build() {
         return this.mapping;
     }
-};
+}
 
-const BaseService = function () {
-    this.listeners = {};
-};
-BaseService.prototype = {
+class BaseService {
+    constructor(config = {}) {
+        this.config = config;
+        this.listeners = {};
+        this.slots = {};
+    }
     addEventListener(eventType, cb) {
         if (!this.listeners[eventType]) {
             this.listeners[eventType] = [];
         }
         this.listeners[eventType].push(cb);
     }
-};
-
-const PubAdsServiceMock = function (config = {}) {
-    this.config = config;
-    this.version = pubadsVersion;
-    this.listeners = {};
-    this.slots = {};
-};
-PubAdsServiceMock.prototype = {
-    ...createMock(pubadsAPI),
-    ...BaseService.prototype,
-    getVersion() {
-        return this.version;
-    },
     getSlots() {
         return Object.keys(this.slots).map(key => this.slots[key]);
-    },
+    }
+}
+
+class PubAdsServiceMock extends BaseService {
+    constructor(config = {}) {
+        super(config);
+        this.version = pubadsVersion;
+    }
+    getVersion() {
+        return this.version;
+    }
     refresh(slots) {
         if (!slots) {
             slots = Object.keys(this.slots).map(key => this.slots[key]);
@@ -178,86 +178,81 @@ PubAdsServiceMock.prototype = {
             });
         }, 0);
     }
-};
+}
+createMock(pubadsAPI, PubAdsServiceMock.prototype);
 
-const CompanionAdsServiceMock = function (config = {}) {
-    this.config = config;
-    this.listeners = {};
-};
-CompanionAdsServiceMock.prototype = {
-    ...BaseService.prototype,
+class CompanionAdsServiceMock extends BaseService {
+    constructor(config = {}) {
+        super(config);
+    }
     enableSyncLoading() {
         this._enableSyncLoading = true;
-    },
+    }
     setRefreshUnfilledSlots(value) {
         if (typeof value === "boolean") {
             this._refreshUnfilledSlots = value;
         }
     }
-};
-
-const ContentServiceMock = function (config = {}) {
-    this.config = config;
-    this.listeners = {};
-};
-ContentServiceMock.prototype = {
-    ...BaseService.prototype,
+}
+class ContentServiceMock extends BaseService {
+    constructor(config = {}) {
+        super(config);
+    }
     setContent(slot, content) {
         slot._content = content;
     }
-};
+}
 
-const GPTMock = function (config = {}) {
-    this.config = config;
-    this.version = gptVersion;
-    this.cmd = {};
-    this.cmd.push = cb => {cb();};
-};
-GPTMock.prototype = {
-    ...createMock(gptAPI),
-    pubadsReady: false,
+class GPTMock {
+    constructor(config = {}) {
+        this.config = config;
+        this.version = gptVersion;
+        this.cmd = {};
+        this.cmd.push = cb => {cb();};
+    }
+    pubadsReady = false;
     getVersion() {
         return this.version;
-    },
+    }
     enableServices() {
         setTimeout(() => {
             this.pubadsReady = true;
         }, 0);
-    },
+    }
     sizeMapping() {
         if (!this.sizeMappingBuilder) {
             this.sizeMappingBuilder = new SizeMappingBuilderMock(this.config);
         }
         return this.sizeMappingBuilder;
-    },
+    }
     pubads() {
         if (!this._pubads) {
             this._pubads = new PubAdsServiceMock(this.config);
         }
         return this._pubads;
-    },
+    }
     companionAds() {
         if (!this._companionAds) {
             this._companionAds = new CompanionAdsServiceMock(this.config);
         }
         return this._companionAds;
-    },
+    }
     content() {
         if (!this._content) {
             this._content = new ContentServiceMock(this.config);
         }
         return this._content;
-    },
+    }
     defineSlot(adUnitPath, size, divId) {
         const slot = new SlotMock(adUnitPath, size, divId);
         this.pubads().slots[divId] = slot;
         return slot;
-    },
+    }
     defineOutOfPageSlot(adUnitPath, divId) {
         const slot = new SlotMock(adUnitPath, [1, 1], divId);
         this.pubads().slots[divId] = slot;
         return slot;
-    },
+    }
     display(divId) {
         const pubads = this.pubads();
         setTimeout(() => {
@@ -280,7 +275,8 @@ GPTMock.prototype = {
             });
         }, 0);
     }
-};
+}
+createMock(gptAPI, GPTMock.prototype);
 
 export {
     GPTMock,
