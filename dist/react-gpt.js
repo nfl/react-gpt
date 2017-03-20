@@ -1575,7 +1575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    var clientRect = el.getBoundingClientRect();
 	    var rect = {
-	        top: clientRect.top - 400,
+	        top: clientRect.top - 500,
 	        left: clientRect.left,
 	        bottom: clientRect.bottom,
 	        right: clientRect.right

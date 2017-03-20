@@ -4,7 +4,7 @@ export default function isInViewport(el, [width, height] = [0, 0], offset = 0) {
     }
     const clientRect = el.getBoundingClientRect();
     const rect = {
-        top: clientRect.top - 400,
+        top: clientRect.top - 500,
         left: clientRect.left,
         bottom: clientRect.bottom,
         right: clientRect.right
