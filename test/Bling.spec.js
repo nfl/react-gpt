@@ -219,7 +219,10 @@ describe("Bling", () => {
     it("handles empty adSlot on clear", () => {
         const instance = new Bling();
         instance._adSlot = {};
-        instance.clear();
+
+        expect(() => {
+            instance.clear();
+        }).to.not.throw("adSlot.getServices is not a function");
     });
 
     it("calls getServices on adSlot on clear", () => {
