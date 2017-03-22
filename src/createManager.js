@@ -131,7 +131,7 @@ export class AdManager extends EventEmitter {
                 instance.foldCheck(event);
             }
         });
-    }, 200)
+    }, 50)
 
     _handleMediaQueryChange = event => {
         if (this._syncCorrelator) {
