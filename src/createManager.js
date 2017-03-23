@@ -321,9 +321,12 @@ export class AdManager extends EventEmitter {
             if (!instance.notInViewport()) {
                 instance.defineSlot();
                 const adSlot = instance.adSlot;
-                const services = adSlot.getServices();
-                if (!hasPubAdsService) {
-                    hasPubAdsService = services.filter(service => !!service.enableAsyncRendering).length > 0;
+
+                if (adSlot && adSlot.hasOwnProperty("getServices")) {
+                    const services = adSlot.getServices();
+                    if (!hasPubAdsService) {
+                        hasPubAdsService = services.filter(service => !!service.enableAsyncRendering).length > 0;
+                    }
                 }
             }
         });

@@ -216,6 +216,23 @@ describe("Bling", () => {
         clear.restore();
     });
 
+    it("handles empty adSlot on clear", () => {
+        const instance = new Bling();
+        instance._adSlot = {};
+
+        expect(() => {
+            instance.clear();
+        }).to.not.throw("adSlot.getServices is not a function");
+    });
+
+    it("calls getServices on adSlot on clear", () => {
+        const instance = new Bling();
+        const adSlot = sinon.mock({getServices: () => {}});
+        adSlot.expects("getServices").once();
+        instance._adSlot = adSlot;
+        instance.clear();
+    });
+
     it("updates correlator", () => {
         const updateCorrelator = sinon.stub(Bling._adManager, "updateCorrelator");
 
