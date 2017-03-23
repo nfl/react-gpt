@@ -1,3 +1,13 @@
+<a name="0.2.4"></a>
+## [0.2.4](https://github.com/nfl/react-gpt/compare/v0.2.3...v0.2.4) (2017-03-23)
+
+
+### Bug Fixes
+
+* more gracefully handle adSlot becoming empty object due to AdBlocker   ([7f9a989](https://github.com/nfl/react-gpt/commit/7f9a989))
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/nfl/react-gpt/compare/v0.2.2...v0.2.3) (2017-02-21)
 
