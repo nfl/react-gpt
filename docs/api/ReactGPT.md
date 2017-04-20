@@ -22,6 +22,7 @@ A React component which renders [GPT](https://support.google.com/dfp_sb/answer/1
 - `collapseEmptyDiv`(optional) - An optional flag to indicate whether an empty ad should be collapsed or not.
 - `forceSafeFrame`(optional) - An optional flag to indicate whether ads in this slot should be forced to be rendered using a SafeFrame container.
 - `safeFrameConfig`(optional) - An optional object to set the slot-level preferences for SafeFrame configuration.
+- `onSlotDisplay`(optional) - An optional event handler function which is triggered when `slot.display()` is called.
 - `onSlotRenderEnded`(optional) - An optional event handler function for `googletag.events.SlotRenderEndedEvent`.
 - `onImpressionViewable`(optional) - An optional event handler function for `googletag.events.ImpressionViewableEvent`.
 - `onSlotVisibilityChanged`(optional) - An optional event handler function for `googletag.events.slotVisibilityChangedEvent`.
@@ -42,7 +43,6 @@ Only `adUnitPath` is a required prop, but either `slotSize` or `sizeMapping` nee
 - `removeAllListeners([eventType])` - Removes all listeners, or those of the specified `eventType`.
 - `getGPTVersion` - Returns the GPT version.
 - `getPubadsVersion` - Returns the Pubads version.
-- `syncCorrelator([flag])` - Sets a flag to indicate whether the `refresh` should happen with the same correlator value or not.
 - `render` - Force rendering all the ads.
 - `refresh([slots, options])` - Refreshes the ad specified by an array of slot. If slots are not specified, it will refresh all ads. See [here](https://developers.google.com/doubleclick-gpt/reference#googletag.PubAdsService_refresh) for more details.
 - `clear([slots])` - Clears the ad specifid by an array of slot. If slots are not specified, it will clear all ads. See [here](https://developers.google.com/doubleclick-gpt/reference#googletagpubadsservice) for more details.

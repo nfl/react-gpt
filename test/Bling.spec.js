@@ -60,20 +60,6 @@ describe("Bling", () => {
         );
     });
 
-    it("accepts syncCorrelator", (done) => {
-        const render = sinon.stub(Bling._adManager, "render", function () {
-            expect(this._syncCorrelator).to.be.true;
-            render.restore();
-            done();
-        });
-
-        Bling.syncCorrelator();
-
-        ReactTestUtils.renderIntoDocument(
-            <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
-        );
-    });
-
     it("accepts pubads API", (done) => {
         const apiStubs = {};
         pubadsAPI.forEach(method => {
@@ -551,47 +537,6 @@ describe("Bling", () => {
     it("refreshes ad when refreshable prop changes", (done) => {
         let count = 0;
 
-        Bling.syncCorrelator();
-
-        class Wrapper extends Component {
-            state = {
-                targeting: {prop: "val"}
-            }
-            onSlotRenderEnded = event => {
-                if (count === 0) {
-                    expect(event.slot.getTargeting("prop")).to.equal("val");
-                    this.setState({
-                        targeting: {prop: "val2"}
-                    });
-                    count++;
-                } else {
-                    expect(event.slot.getTargeting("prop")).to.equal("val2");
-                    done();
-                }
-            }
-            render() {
-                const {targeting} = this.state;
-                return (
-                    <Bling
-                        adUnitPath="/4595/nfl.test.open"
-                        slotSize={[300, 250]}
-                        targeting={targeting}
-                        onSlotRenderEnded={this.onSlotRenderEnded}
-                    />
-                );
-            }
-        }
-
-        ReactTestUtils.renderIntoDocument(
-            <Wrapper />
-        );
-    });
-
-    it("refreshes ad when refreshableProps changes w/o sync correlator", (done) => {
-        let count = 0;
-
-        Bling.syncCorrelator(false);
-
         class Wrapper extends Component {
             state = {
                 targeting: {prop: "val"}
@@ -628,8 +573,6 @@ describe("Bling", () => {
 
     it("re-renders ad when reRenderProps changes", (done) => {
         let count = 0;
-
-        Bling.syncCorrelator();
 
         class Wrapper extends Component {
             state = {
@@ -673,5 +616,51 @@ describe("Bling", () => {
         );
         instance.componentWillUnmount();
         expect(Bling._adManager.getMountedInstances()).to.have.length(0);
+    });
+
+    it("setting syncCorrelator does not trigger refreshing all slots", (done) => {
+        let count = 0;
+        let refresh;
+
+        Bling.syncCorrelator(true);
+
+        class Wrapper extends Component {
+            state = {
+                targeting: {prop: "val"}
+            }
+            componentDidUpdate() {
+                expect(refresh.calledOnce).to.be.true;
+                // only triggers `refresh` on this ad.
+                expect(refresh.calledWith([this.ad.adSlot])).to.be.true;
+                refresh.restore();
+                done();
+            }
+            onSlotRenderEnded = event => {
+                if (count === 0) {
+                    expect(event.slot.getTargeting("prop")).to.equal("val");
+                    refresh = sinon.stub(Bling._adManager, "refresh");
+                    this.setState({
+                        targeting: {prop: "val2"}
+                    });
+                    count++;
+                }
+            }
+            render() {
+                const {targeting} = this.state;
+                return (
+                    <Bling
+                        adUnitPath="/4595/nfl.test.open"
+                        ref={ref => this.ad = ref}
+                        slotSize={[300, 250]}
+                        targeting={targeting}
+                        onSlotRenderEnded={this.onSlotRenderEnded}
+                    />
+                );
+            }
+        }
+
+        ReactTestUtils.renderIntoDocument(
+            <Wrapper />
+        );
     });
 });

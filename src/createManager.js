@@ -52,8 +52,6 @@ export class AdManager extends EventEmitter {
 
     _initialRender = true
 
-    _syncCorrelator = false
-
     _testMode = false
 
     get googletag() {
@@ -133,10 +131,6 @@ export class AdManager extends EventEmitter {
     }, 66)
 
     _handleMediaQueryChange = event => {
-        if (this._syncCorrelator) {
-            this.refresh();
-            return;
-        }
         // IE returns `event.media` value differently, need to use regex to evaluate.
         const res = (/min-width:\s?(\d+)px/).exec(event.media);
         const viewportWidth = res && res[1];
@@ -180,10 +174,6 @@ export class AdManager extends EventEmitter {
         if (instance && instance.props[funcName]) {
             instance.props[funcName](event);
         }
-    }
-
-    syncCorrelator(value = true) {
-        this._syncCorrelator = value;
     }
 
     generateDivId() {
