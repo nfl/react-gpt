@@ -1,4 +1,5 @@
 import EventEmitter from "eventemitter3";
+import throttle from "lodash.throttle";
 import debounce from "debounce";
 import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
 import Events from "./Events";
@@ -123,14 +124,14 @@ export class AdManager extends EventEmitter {
         });
     }
 
-    _foldCheck = debounce(event => {
+    _foldCheck = throttle(event => {
         const instances = this.getMountedInstances();
         instances.forEach(instance => {
             if (instance.getRenderWhenViewable()) {
                 instance.foldCheck(event);
             }
         });
-    }, 66)
+    }, 50)
 
     _handleMediaQueryChange = event => {
         if (this._syncCorrelator) {
