@@ -443,7 +443,7 @@ export class AdManager extends EventEmitter {
                     reject(new Error("window.googletag is not available"));
                 }
             };
-            if (window.googletag) {
+            if (window.googletag && googletag.apiReady) {
                 onLoad();
             } else {
                 const script = document.createElement("script");
