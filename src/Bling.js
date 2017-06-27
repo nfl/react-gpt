@@ -1,5 +1,6 @@
 /* eslint-disable react/sort-comp */
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import invariant from "fbjs/lib/invariant";
 import deepEqual from "deep-equal";
