@@ -1,5 +1,6 @@
 /* eslint-disable react/no-multi-comp */
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import createHistory from "history/createHashHistory";
 import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import "../log";

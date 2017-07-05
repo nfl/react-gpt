@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Radium from "radium";
 import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import styles from "./styles/content";
