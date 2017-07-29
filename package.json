@@ -75,6 +75,7 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^3.1.2",
     "phantom": "^2.0.4",
+    "prop-types": "^15.5.10",
     "querystring": "^0.2.0",
     "radium": "^0.18.1",
     "react": "^15.0.1",
