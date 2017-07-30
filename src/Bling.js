@@ -357,8 +357,9 @@ class Bling extends Component {
         Bling._adManager.updateCorrelator();
     }
 
-    static createTestManager() {
-        Bling._adManager = createManager({test: true});
+    static set testManager(testManager) {
+        invariant(testManager, "Pass in createManagerTest to mock GPT");
+        Bling._adManager = testManager;
     }
 
     state = {

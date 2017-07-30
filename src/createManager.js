@@ -1,9 +1,9 @@
 import EventEmitter from "eventemitter3";
 import debounce from "debounce";
+import invariant from "fbjs/lib/invariant";
 import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
 import Events from "./Events";
 import isInViewport from "./utils/isInViewport";
-import {GPTMock} from "./utils/mockGPT";
 
 // based on https://developers.google.com/doubleclick-gpt/reference?hl=en
 export const pubadsAPI = [
@@ -44,7 +44,7 @@ export class AdManager extends EventEmitter {
         super(config);
 
         if (config.test) {
-            this.testMode = config.test;
+            this.testMode = config;
         }
     }
 
@@ -84,9 +84,17 @@ export class AdManager extends EventEmitter {
         if (process.env.NODE_ENV === "production") {
             return;
         }
-        this._googletag = new GPTMock(config);
+        const {test, GPTMock} = config;
         this._isLoaded = true;
-        this._testMode = !!config;
+        this._testMode = !!test;
+
+        if (test) {
+            invariant(
+                test && GPTMock,
+                "Must provide GPTMock to enable testMode. config{GPTMock}"
+            );
+            this._googletag = new GPTMock(config);
+        }
     }
 
     _processPubadsQueue() {
@@ -443,7 +451,7 @@ export class AdManager extends EventEmitter {
                     reject(new Error("window.googletag is not available"));
                 }
             };
-            if (window.googletag && googletag.apiReady) {
+            if (window.googletag && window.googletag.apiReady) {
                 onLoad();
             } else {
                 const script = document.createElement("script");

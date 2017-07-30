@@ -6,6 +6,7 @@ import Bling from "../src/Bling";
 import Events from "../src/Events";
 import {pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
 import {gptVersion, pubadsVersion} from "../src/utils/apiList";
+import {createManagerTest} from "../src/utils/createManagerTest";
 
 describe("Bling", () => {
     let googletag;
@@ -13,7 +14,7 @@ describe("Bling", () => {
 
     beforeEach(() => {
         Bling.configure({renderWhenViewable: false});
-        Bling.createTestManager();
+        Bling.testManager = createManagerTest();
         googletag = Bling._adManager.googletag;
     });
 
