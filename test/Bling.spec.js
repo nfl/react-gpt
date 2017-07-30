@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import ReactTestUtils from "react-addons-test-utils";
+import ReactTestUtils from "react-dom/test-utils";
 import Bling from "../src/Bling";
 import Events from "../src/Events";
 import {pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
