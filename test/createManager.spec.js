@@ -1,13 +1,14 @@
 import {createManager, AdManager, pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
 import Events from "../src/Events";
 import {gptVersion} from "../src/utils/apiList";
+import {createManagerTest} from "../src/utils/createManagerTest";
 
 describe("createManager", () => {
     let googletag;
     let adManager;
 
     beforeEach(() => {
-        adManager = createManager({test: true});
+        adManager = createManagerTest();
         googletag = adManager.googletag;
     });
 
