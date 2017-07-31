@@ -30,7 +30,7 @@ A [React](https://github.com/facebook/react) component for [Google Publisher Tag
 ## Installation
 
 ```
-$ npm install --save react-gpt
+$ yarn react-gpt
 ```
 
 React GPT depends on [Promise](https://promisesaplus.com/) to be available in browser. If your application support the browser which doesn't support Promise, please include the polyfill.
@@ -120,7 +120,7 @@ class Application extends React.Component {
 ## To run examples:
 
 1. Clone this repo
-2. Run `npm install`
+2. Run `yarn`
 3. Run `npm run examples` for client side rendering, `npm start` for server side rendering.
 4. Point your browser to http://localhost:8080
 
