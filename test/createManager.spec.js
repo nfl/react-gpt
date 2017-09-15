@@ -399,7 +399,7 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("debounces foldCheck", (done) => {
+    it("throttles foldCheck", (done) => {
         const instance = {
             props: {
                 sizeMapping: [{viewport: [0, 0], slot: [320, 50]}]
@@ -427,8 +427,8 @@ describe("createManager", () => {
         adManager.addInstance(instance2);
 
         setTimeout(() => {
-            expect(foldCheck.calledOnce).to.be.true;
-            expect(foldCheck2.calledOnce).to.be.false;
+            expect(foldCheck.calledTwice).to.be.true;
+            expect(foldCheck2.notCalled).to.be.true;
             foldCheck.restore();
             foldCheck2.restore();
             adManager.removeInstance(instance);

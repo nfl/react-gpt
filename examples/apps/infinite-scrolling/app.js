@@ -1,7 +1,7 @@
 /* eslint-disable react/sort-comp */
 import React, {Component} from "react";
 import Radium from "radium";
-import debounce from "debounce";
+import debounce from "lodash.debounce";
 import {Bling as Gpt, Events} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import "../log";
 import Content from "./content";
