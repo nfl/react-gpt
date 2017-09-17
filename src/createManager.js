@@ -1,6 +1,5 @@
 import EventEmitter from "eventemitter3";
-import debounce from "lodash.debounce";
-import throttle from "lodash.throttle";
+import {debounce, throttle} from "throttle-debounce";
 import invariant from "fbjs/lib/invariant";
 import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
 import Events from "./Events";
@@ -132,17 +131,22 @@ export class AdManager extends EventEmitter {
         });
     }
 
-    _foldCheck = throttle(event => {
+    _foldCheck = throttle(20, event => {
         const instances = this.getMountedInstances();
         instances.forEach(instance => {
             if (instance.getRenderWhenViewable()) {
                 instance.foldCheck(event);
             }
         });
-    }, 20, {
-        leading: true,
-        trailing: true
+
+        if (this.testMode) {
+            this._getTimer();
+        }
     })
+
+    _getTimer() {
+        return Date.now();
+    }
 
     _handleMediaQueryChange = event => {
         if (this._syncCorrelator) {
@@ -311,7 +315,7 @@ export class AdManager extends EventEmitter {
         return true;
     }
 
-    render = debounce(() => {
+    render = debounce(4, () => {
         if (!this._initialRender) {
             return;
         }
@@ -379,7 +383,7 @@ export class AdManager extends EventEmitter {
 
             this._initialRender = false;
         });
-    }, 4)
+    })
 
     /**
      * Re-render(not refresh) all the ads in the page and the first ad will update the correlator value.
@@ -388,7 +392,7 @@ export class AdManager extends EventEmitter {
      * @method renderAll
      * @static
      */
-    renderAll = debounce(() => {
+    renderAll = debounce(4, () => {
         if (!this.apiReady) {
             return false;
         }
@@ -403,7 +407,7 @@ export class AdManager extends EventEmitter {
         });
 
         return true;
-    }, 4)
+    })
 
     getGPTVersion() {
         if (!this.apiReady) {
