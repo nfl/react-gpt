@@ -1,7 +1,7 @@
 /* eslint-disable react/sort-comp */
 import React, {Component} from "react";
 import Radium from "radium";
-import debounce from "debounce";
+import debounce from "throttle-debounce/debounce";
 import {Bling as Gpt, Events} from "react-gpt"; // eslint-disable-line import/no-unresolved
 import "../log";
 import Content from "./content";
@@ -40,14 +40,14 @@ class App extends Component {
         window.removeEventListener("resize", this.onScroll);
         this.stopTimer();
     }
-    onScroll = debounce(() => {
+    onScroll = debounce(66, () => {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         if (scrollTop + window.innerHeight >= document.body.clientHeight) {
             this.setState({
                 page: ++this.state.page
             });
         }
-    }, 66)
+    })
     startTimer() {
         this.stopTimer();
         this.timer = setInterval(() => {

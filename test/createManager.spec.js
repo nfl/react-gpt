@@ -399,7 +399,7 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("debounces foldCheck", (done) => {
+    it("throttles foldCheck", (done) => {
         const instance = {
             props: {
                 sizeMapping: [{viewport: [0, 0], slot: [320, 50]}]
@@ -422,23 +422,45 @@ describe("createManager", () => {
 
         const foldCheck = sinon.stub(instance, "foldCheck");
         const foldCheck2 = sinon.stub(instance2, "foldCheck");
+        const getRenderWhenViewable = sinon.spy(instance, "getRenderWhenViewable");
+        const getRenderWhenViewable2 = sinon.spy(instance2, "getRenderWhenViewable");
+        const managerFoldCheck = sinon.spy(adManager, "_foldCheck");
+        const timer = sinon.spy(adManager, "_getTimer");
 
         adManager.addInstance(instance);
         adManager.addInstance(instance2);
 
+        const start = Date.now();
+        adManager._foldCheck();
+        adManager._foldCheck();
         setTimeout(() => {
-            expect(foldCheck.calledOnce).to.be.true;
-            expect(foldCheck2.calledOnce).to.be.false;
+            adManager._foldCheck();
+        }, 5);
+        setTimeout(() => {
+            adManager._foldCheck();
+        }, 10);
+        setTimeout(() => {
+            adManager._foldCheck();
+        }, 15);
+
+        setTimeout(() => {
+            expect(managerFoldCheck.callCount).to.equal(5);
+            expect(timer.calledTwice).to.be.true;
+            expect(timer.returnValues[1] - timer.returnValues[0]).to.be.above(19); // timer above 20ms timeout
+            expect(timer.returnValues[0] - start).to.be.below(5); // should start ~immediately
+            expect(foldCheck.calledTwice).to.be.true;
+            expect(foldCheck2.notCalled).to.be.true;
+
             foldCheck.restore();
             foldCheck2.restore();
+            getRenderWhenViewable.restore();
+            getRenderWhenViewable2.restore();
+            managerFoldCheck.restore();
+            timer.restore();
             adManager.removeInstance(instance);
             adManager.removeInstance(instance2);
             done();
         }, 100);
-
-        adManager._foldCheck();
-        adManager._foldCheck();
-        adManager._foldCheck();
     });
 
     it("renders all ads", (done) => {
