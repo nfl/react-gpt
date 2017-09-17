@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, {Component} from "react";
 import Radium from "radium";
 import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
@@ -46,17 +47,17 @@ class App extends Component {
                 sizeMapping:
                     this.state.sizeMapping[1].slot[1] === 50
                         ? [
-                            {viewport: [0, 0], slot: [1, 1]},
-                            {viewport: [340, 0], slot: [300, 250]},
-                            {viewport: [750, 200], slot: [728, 90]},
-                            {viewport: [1050, 200], slot: [1024, 120]}
-                        ]
+                              {viewport: [0, 0], slot: [1, 1]},
+                              {viewport: [340, 0], slot: [300, 250]},
+                              {viewport: [750, 200], slot: [728, 90]},
+                              {viewport: [1050, 200], slot: [1024, 120]}
+                          ]
                         : [
-                            {viewport: [0, 0], slot: [1, 1]},
-                            {viewport: [340, 0], slot: [320, 50]},
-                            {viewport: [750, 200], slot: [728, 90]},
-                            {viewport: [1050, 200], slot: [1024, 120]}
-                        ]
+                              {viewport: [0, 0], slot: [1, 1]},
+                              {viewport: [340, 0], slot: [320, 50]},
+                              {viewport: [750, 200], slot: [728, 90]},
+                              {viewport: [1050, 200], slot: [1024, 120]}
+                          ]
             };
         }
         this.setState(newState);

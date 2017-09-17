@@ -167,7 +167,8 @@ export class AdManager extends EventEmitter {
             return;
         }
         // IE returns `event.media` value differently, need to use regex to evaluate.
-        const res = (/min-width:\s?(\d+)px/).exec(event.media);
+        // eslint-disable-next-line wrap-regex
+        const res = /min-width:\s?(\d+)px/.exec(event.media);
         const viewportWidth = res && res[1];
 
         if (viewportWidth && this._mqls[viewportWidth]) {
