@@ -65,11 +65,15 @@ describe("Bling", () => {
     });
 
     it("accepts syncCorrelator", done => {
-        const render = sinon.stub(Bling._adManager, "render", () => {
-            expect(this._syncCorrelator).to.be.true;
-            render.restore();
-            done();
-        });
+        const render = sinon.stub(
+            Bling._adManager,
+            "render",
+            function syncCorrelator() {
+                expect(this._syncCorrelator).to.be.true;
+                render.restore();
+                done();
+            }
+        );
 
         Bling.syncCorrelator();
 
