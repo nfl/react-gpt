@@ -1,15 +1,13 @@
 import React, {Component} from "react";
 import {StyleRoot} from "radium";
 import {Bling as Gpt} from "react-gpt"; // eslint-disable-line import/no-unresolved
-import {canUseDOM} from "exenv";
+import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
 import querystring from "querystring";
 import "../log";
 import Button from "./button";
 import styles from "./styles";
 
-const qs = canUseDOM
-    ? querystring.decode(window.location.search.substr(1))
-    : {};
+const qs = canUseDOM ? querystring.decode(window.location.search.substr(1)) : {};
 
 Gpt.enableSingleRequest().then(value => {
     console.log("value", value);
@@ -24,8 +22,8 @@ class App extends Component {
         targeting: {
             test: "responsive"
         }
-    };
-    onClick = params => {
+    }
+    onClick = (params) => {
         if (params === "refresh") {
             Gpt.refresh();
         } else if (params === "disableInitialLoad") {
@@ -42,21 +40,33 @@ class App extends Component {
                 }
             });
         }
-    };
+    }
     render() {
         const {adUnitPath, targeting} = this.state;
         return (
             <StyleRoot>
-                <Button params="disableInitialLoad" onClick={this.onClick}>
+                <Button
+                    params="disableInitialLoad"
+                    onClick={this.onClick}
+                >
                     Disable Initial Load
                 </Button>
-                <Button params="refresh" onClick={this.onClick}>
+                <Button
+                    params="refresh"
+                    onClick={this.onClick}
+                >
                     Refresh
                 </Button>
-                <Button params="adUnitPath" onClick={this.onClick}>
-                    Change adUnitPath
+                <Button
+                    params="adUnitPath"
+                    onClick={this.onClick}
+                >
+                     Change adUnitPath
                 </Button>
-                <Button params="targeting" onClick={this.onClick}>
+                <Button
+                    params="targeting"
+                    onClick={this.onClick}
+                >
                     Change targeting
                 </Button>
                 <div style={styles.lb}>
