@@ -34,8 +34,9 @@
   "dependencies": {
     "deep-equal": "^1.0.1",
     "eventemitter3": "^2.0.2",
-    "fbjs": "^0.8.1",
+    "exenv": "^1.2.2",
     "hoist-non-react-statics": "^1.0.5",
+    "invariant": "^2.2.2",
     "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
@@ -91,9 +92,9 @@
     "webpack-dev-server": "^1.14.1"
   },
   "peerDepencencies": {
-      "prop-types": "^15.5.10",
-      "react": "^15.0.1",
-      "react-dom": "^15.0.1"
+    "prop-types": "^15.5.10",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
   },
   "scripts": {
     "commit": "git-cz",

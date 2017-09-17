@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import {debounce, throttle} from "throttle-debounce";
-import invariant from "fbjs/lib/invariant";
-import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
+import invariant from "invariant";
+import {canUseDOM} from "exenv";
 import Events from "./Events";
 import isInViewport from "./utils/isInViewport";
 
