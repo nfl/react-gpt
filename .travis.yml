@@ -1,8 +1,7 @@
 language: node_js
 sudo: false
 node_js:
-  - "4"
-  - "5"
+  - "node"
 cache:
   directories:
   - node_modules
@@ -16,5 +15,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 script:
   - npm test
+  - npm run bundlesize
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
