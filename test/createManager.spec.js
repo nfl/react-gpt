@@ -456,7 +456,7 @@ describe("createManager", () => {
             getRenderWhenViewable.restore();
             getRenderWhenViewable2.restore();
             managerFoldCheck.restore();
-            timer.restore()
+            timer.restore();
             adManager.removeInstance(instance);
             adManager.removeInstance(instance2);
             done();
