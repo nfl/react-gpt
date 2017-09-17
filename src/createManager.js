@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import debounce from "debounce";
-import invariant from "fbjs/lib/invariant";
-import {canUseDOM} from "fbjs/lib/ExecutionEnvironment";
+import invariant from "invariant";
+import {canUseDOM} from "exenv";
 import Events from "./Events";
 import isInViewport from "./utils/isInViewport";
 
@@ -48,13 +48,13 @@ export class AdManager extends EventEmitter {
         }
     }
 
-    _adCnt = 0
+    _adCnt = 0;
 
-    _initialRender = true
+    _initialRender = true;
 
-    _syncCorrelator = false
+    _syncCorrelator = false;
 
-    _testMode = false
+    _testMode = false;
 
     get googletag() {
         return this._googletag;
@@ -100,9 +100,15 @@ export class AdManager extends EventEmitter {
     _processPubadsQueue() {
         if (this._pubadsProxyQueue) {
             Object.keys(this._pubadsProxyQueue).forEach(method => {
-                if ((this.googletag && !this.googletag.pubadsReady && APIToCallBeforeServiceEnabled.indexOf(method) > -1) ||
-                    this.pubadsReady) {
-                    this._pubadsProxyQueue[method].forEach((params) => this.pubadsProxy(params));
+                if (
+                    (this.googletag &&
+                        !this.googletag.pubadsReady &&
+                        APIToCallBeforeServiceEnabled.indexOf(method) > -1) ||
+                    this.pubadsReady
+                ) {
+                    this._pubadsProxyQueue[method].forEach(params =>
+                        this.pubadsProxy(params)
+                    );
                     delete this._pubadsProxyQueue[method];
                 }
             });
@@ -114,7 +120,11 @@ export class AdManager extends EventEmitter {
 
     _callPubads({method, args, resolve, reject}) {
         if (typeof this.googletag.pubads()[method] !== "function") {
-            reject(new Error(`googletag.pubads does not support ${method}, please update pubadsAPI`));
+            reject(
+                new Error(
+                    `googletag.pubads does not support ${method}, please update pubadsAPI`
+                )
+            );
         } else {
             try {
                 const result = this.googletag.pubads()[method](...args);
@@ -127,7 +137,10 @@ export class AdManager extends EventEmitter {
 
     _toggleListener(add) {
         ["scroll", "resize"].forEach(eventName => {
-            window[add ? "addEventListener" : "removeEventListener"](eventName, this._foldCheck);
+            window[add ? "addEventListener" : "removeEventListener"](
+                eventName,
+                this._foldCheck
+            );
         });
     }
 
@@ -138,7 +151,7 @@ export class AdManager extends EventEmitter {
                 instance.foldCheck(event);
             }
         });
-    }, 66)
+    }, 66);
 
     _handleMediaQueryChange = event => {
         if (this._syncCorrelator) {
@@ -157,7 +170,7 @@ export class AdManager extends EventEmitter {
                 }
             });
         }
-    }
+    };
 
     _listen() {
         if (!this._listening) {
@@ -168,7 +181,12 @@ export class AdManager extends EventEmitter {
             ].forEach(eventType => {
                 ["pubads", "content", "companionAds"].forEach(service => {
                     // there is no API to remove listeners.
-                    this.googletag[service]().addEventListener(eventType, this._onEvent.bind(this, eventType));
+                    this.googletag
+                        [service]()
+                        .addEventListener(
+                            eventType,
+                            this._onEvent.bind(this, eventType)
+                        );
                 });
             });
             this._listening = true;
@@ -183,7 +201,9 @@ export class AdManager extends EventEmitter {
         // call event handler props
         const instances = this.getMountedInstances();
         const {slot} = event;
-        const funcName = `on${eventType.charAt(0).toUpperCase()}${eventType.substr(1)}`;
+        const funcName = `on${eventType
+            .charAt(0)
+            .toUpperCase()}${eventType.substr(1)}`;
         const instance = instances.filter(inst => slot === inst.adSlot)[0];
         if (instance && instance.props[funcName]) {
             instance.props[funcName](event);
@@ -243,14 +263,18 @@ export class AdManager extends EventEmitter {
                     this._mqls = {};
                 }
                 if (!this._mqls[viewportWidth]) {
-                    const mql = window.matchMedia(`(min-width: ${viewportWidth}px)`);
+                    const mql = window.matchMedia(
+                        `(min-width: ${viewportWidth}px)`
+                    );
                     mql.addListener(this._handleMediaQueryChange);
                     this._mqls[viewportWidth] = {
                         mql,
                         listeners: []
                     };
                 }
-                if (this._mqls[viewportWidth].listeners.indexOf(instance) === -1) {
+                if (
+                    this._mqls[viewportWidth].listeners.indexOf(instance) === -1
+                ) {
                     this._mqls[viewportWidth].listeners.push(instance);
                 }
             }
@@ -262,17 +286,18 @@ export class AdManager extends EventEmitter {
             return;
         }
 
-        Object.keys(this._mqls)
-            .forEach(key => {
-                const index = this._mqls[key].listeners.indexOf(instance);
-                if (index > -1) {
-                    this._mqls[key].listeners.splice(index, 1);
-                }
-                if (this._mqls[key].listeners.length === 0) {
-                    this._mqls[key].mql.removeListener(this._handleMediaQueryChange);
-                    delete this._mqls[key];
-                }
-            });
+        Object.keys(this._mqls).forEach(key => {
+            const index = this._mqls[key].listeners.indexOf(instance);
+            if (index > -1) {
+                this._mqls[key].listeners.splice(index, 1);
+            }
+            if (this._mqls[key].listeners.length === 0) {
+                this._mqls[key].mql.removeListener(
+                    this._handleMediaQueryChange
+                );
+                delete this._mqls[key];
+            }
+        });
     }
 
     isInViewport(...args) {
@@ -325,7 +350,7 @@ export class AdManager extends EventEmitter {
         let dummyAdSlot;
 
         // Define all the slots
-        instances.forEach((instance) => {
+        instances.forEach(instance => {
             if (!instance.notInViewport()) {
                 instance.defineSlot();
                 const adSlot = instance.adSlot;
@@ -333,7 +358,10 @@ export class AdManager extends EventEmitter {
                 if (adSlot && adSlot.hasOwnProperty("getServices")) {
                     const services = adSlot.getServices();
                     if (!hasPubAdsService) {
-                        hasPubAdsService = services.filter(service => !!service.enableAsyncRendering).length > 0;
+                        hasPubAdsService =
+                            services.filter(
+                                service => !!service.enableAsyncRendering
+                            ).length > 0;
                     }
                 }
             }
@@ -365,7 +393,7 @@ export class AdManager extends EventEmitter {
             this.emit(Events.READY, this.googletag);
 
             // Call display
-            instances.forEach((instance) => {
+            instances.forEach(instance => {
                 if (!instance.notInViewport()) {
                     instance.display();
                 }
@@ -375,7 +403,7 @@ export class AdManager extends EventEmitter {
 
             this._initialRender = false;
         });
-    }, 4)
+    }, 4);
 
     /**
      * Re-render(not refresh) all the ads in the page and the first ad will update the correlator value.
@@ -399,7 +427,7 @@ export class AdManager extends EventEmitter {
         });
 
         return true;
-    }, 4)
+    }, 4);
 
     getGPTVersion() {
         if (!this.apiReady) {
@@ -425,45 +453,48 @@ export class AdManager extends EventEmitter {
     }
 
     load(url) {
-        return this._loadPromise || (this._loadPromise = new Promise((resolve, reject) => {
-            // test mode can't be enabled in production mode
-            if (this.testMode) {
-                resolve(this.googletag);
-                return;
-            }
-            if (!canUseDOM) {
-                reject(new Error("DOM not available"));
-                return;
-            }
-            if (!url) {
-                reject(new Error("url is missing"));
-                return;
-            }
-            const onLoad = () => {
-                if (window.googletag) {
-                    this._googletag = window.googletag;
-                    // make sure API is ready for use.
-                    this.googletag.cmd.push(() => {
-                        this._isLoaded = true;
-                        resolve(this.googletag);
-                    });
-                } else {
-                    reject(new Error("window.googletag is not available"));
+        return (
+            this._loadPromise ||
+            (this._loadPromise = new Promise((resolve, reject) => {
+                // test mode can't be enabled in production mode
+                if (this.testMode) {
+                    resolve(this.googletag);
+                    return;
                 }
-            };
-            if (window.googletag && window.googletag.apiReady) {
-                onLoad();
-            } else {
-                const script = document.createElement("script");
-                script.async = true;
-                script.onload = onLoad;
-                script.onerror = () => {
-                    reject(new Error("failed to load script"));
+                if (!canUseDOM) {
+                    reject(new Error("DOM not available"));
+                    return;
+                }
+                if (!url) {
+                    reject(new Error("url is missing"));
+                    return;
+                }
+                const onLoad = () => {
+                    if (window.googletag) {
+                        this._googletag = window.googletag;
+                        // make sure API is ready for use.
+                        this.googletag.cmd.push(() => {
+                            this._isLoaded = true;
+                            resolve(this.googletag);
+                        });
+                    } else {
+                        reject(new Error("window.googletag is not available"));
+                    }
                 };
-                script.src = url;
-                document.head.appendChild(script);
-            }
-        }));
+                if (window.googletag && window.googletag.apiReady) {
+                    onLoad();
+                } else {
+                    const script = document.createElement("script");
+                    script.async = true;
+                    script.onload = onLoad;
+                    script.onerror = () => {
+                        reject(new Error("failed to load script"));
+                    };
+                    script.src = url;
+                    document.head.appendChild(script);
+                }
+            }))
+        );
     }
 
     pubadsProxy({method, args = [], resolve, reject}) {
@@ -474,7 +505,12 @@ export class AdManager extends EventEmitter {
                 this[`_${method}`] = (args && args.length && args[0]) || true;
             }
             return new Promise((resolve2, reject2) => {
-                const params = {method, args, resolve: resolve2, reject: reject2};
+                const params = {
+                    method,
+                    args,
+                    resolve: resolve2,
+                    reject: reject2
+                };
                 if (!this.pubadsReady) {
                     if (!this._pubadsProxyQueue) {
                         this._pubadsProxyQueue = {};
