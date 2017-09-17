@@ -90,6 +90,11 @@
     "webpack-dev-middleware": "^1.5.1",
     "webpack-dev-server": "^1.14.1"
   },
+  "peerDepencencies": {
+      "prop-types": "^15.5.10",
+      "react": "^15.0.1",
+      "react-dom": "^15.0.1"
+  },
   "scripts": {
     "commit": "git-cz",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
