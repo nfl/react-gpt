@@ -6,6 +6,7 @@
     ],
     "plugins": [
         "import",
+        "prettier",
         "react"
     ],
     "rules": {

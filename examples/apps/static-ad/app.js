@@ -8,22 +8,19 @@ import styles from "./styles";
 class App extends Component {
     state = {
         color: "000000"
-    }
+    };
 
     onClick = () => {
         this.setState({
             color: this.state.color === "000000" ? "ff0000" : "000000"
         });
-    }
+    };
 
     render() {
         const {color} = this.state;
         return (
             <div>
-                <button
-                    style={styles.button}
-                    onClick={this.onClick}
-                >
+                <button style={styles.button} onClick={this.onClick}>
                     Change content
                 </button>
                 <div style={styles.lb}>

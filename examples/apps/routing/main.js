@@ -2,6 +2,4 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app";
 
-ReactDOM.render((
-    <App />
-), document.getElementById("example"));
+ReactDOM.render(<App />, document.getElementById("example"));

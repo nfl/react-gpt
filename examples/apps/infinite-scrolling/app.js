@@ -16,8 +16,8 @@ class App extends Component {
     state = {
         page: 1,
         size: [728, 90]
-    }
-    time = 0
+    };
+    time = 0;
     componentDidMount() {
         window.addEventListener("scroll", this.onScroll);
         window.addEventListener("resize", this.onScroll);
@@ -47,7 +47,7 @@ class App extends Component {
                 page: ++this.state.page
             });
         }
-    })
+    });
     startTimer() {
         this.stopTimer();
         this.timer = setInterval(() => {
@@ -68,7 +68,8 @@ class App extends Component {
         const targeting = {
             test: "infinitescroll"
         };
-        while (contentCnt < page * 3) { // eslint-disable-line no-unmodified-loop-condition
+        while (contentCnt < page * 3) {
+            // eslint-disable-line no-unmodified-loop-condition
             contents.push(
                 <Content
                     index={contentCnt % 3}
@@ -92,9 +93,7 @@ class App extends Component {
                         targeting={targeting}
                     />
                 </div>
-                <div style={styles.main}>
-                    {contents}
-                </div>
+                <div style={styles.main}>{contents}</div>
             </div>
         );
     }

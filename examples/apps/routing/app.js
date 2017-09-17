@@ -16,7 +16,7 @@ class App extends Component {
         location: PropTypes.object,
         history: PropTypes.object,
         children: PropTypes.node
-    }
+    };
 
     createHref(path) {
         return `${window.location.origin}${window.location.pathname}#${path}`;
@@ -33,9 +33,19 @@ class App extends Component {
         return (
             <div>
                 <ul>
-                    <li><a href={this.createHref("/Travel/Europe")}>Home</a></li>
-                    <li><a href={this.createHref("/Travel/Europe/France")}>France</a></li>
-                    <li><a href={this.createHref("/Travel/Europe/Spain")}>Spain</a></li>
+                    <li>
+                        <a href={this.createHref("/Travel/Europe")}>Home</a>
+                    </li>
+                    <li>
+                        <a href={this.createHref("/Travel/Europe/France")}>
+                            France
+                        </a>
+                    </li>
+                    <li>
+                        <a href={this.createHref("/Travel/Europe/Spain")}>
+                            Spain
+                        </a>
+                    </li>
                 </ul>
                 <div style={styles.topAd}>
                     <Gpt
@@ -51,19 +61,21 @@ class App extends Component {
 }
 
 class AppContainer extends Component {
-    routes = { // eslint-disable-line react/sort-comp
+    routes = {
+        // eslint-disable-line react/sort-comp
         "/Travel/Europe": {component: Home},
         "/Travel/Europe/France": {component: Page, params: {id: "France"}},
         "/Travel/Europe/Spain": {component: Page, params: {id: "Spain"}}
-    }
+    };
 
     state = {
         routeComponent: this.routes["/Travel/Europe"].component
-    }
+    };
 
     componentWillMount() {
         this.unlisten = this.history.listen(location => {
-            const route = this.routes[location.pathname] || this.routes["/Travel/Europe"];
+            const route =
+                this.routes[location.pathname] || this.routes["/Travel/Europe"];
             const {component: routeComponent, params} = route;
             this.setState({routeComponent, location, params});
         });
@@ -74,13 +86,14 @@ class AppContainer extends Component {
         this.unlisten();
     }
 
-    history = createHistory()
+    history = createHistory();
 
     render() {
         return (
-            <App history={this.history}
-                 location={this.state.location}
-                 params={this.state.params}
+            <App
+                history={this.history}
+                location={this.state.location}
+                params={this.state.params}
             >
                 {React.createElement(this.state.routeComponent)}
             </App>

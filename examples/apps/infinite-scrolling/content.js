@@ -26,7 +26,7 @@ class Content extends Component {
     static propTypes = {
         index: PropTypes.number,
         targeting: PropTypes.object
-    }
+    };
     render() {
         const {index, targeting} = this.props;
         let ad;
@@ -48,7 +48,10 @@ class Content extends Component {
                     {ad}
                     <p>
                         <span style={styles.title}>Content {index}</span>
-                        <span style={styles.description}>Lorem ipsum dolor sit amet, accusamus complectitur an est</span>
+                        <span style={styles.description}>
+                            Lorem ipsum dolor sit amet, accusamus complectitur
+                            an est
+                        </span>
                         {contents[index]}
                     </p>
                 </div>

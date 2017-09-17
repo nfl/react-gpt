@@ -28,7 +28,11 @@ describe("mockGPT", () => {
             .addSize([640, 480], "fluid");
         expect(sizeMappingBuilder).to.equal(sizeMappingBuilder2);
         const mapping = sizeMappingBuilder2.build();
-        expect(mapping).to.eql([[[1024, 768], [970, 250]], [[980, 690], [728, 90]], [[640, 480], "fluid"]]);
+        expect(mapping).to.eql([
+            [[1024, 768], [970, 250]],
+            [[980, 690], [728, 90]],
+            [[640, 480], "fluid"]
+        ]);
     });
 
     it("returns pubAdsService from pubads()", () => {
@@ -38,7 +42,9 @@ describe("mockGPT", () => {
 
     it("returns companionAdsService from companionAds()", () => {
         const companionAdsService = gptMock.companionAds();
-        expect(companionAdsService).to.be.an.instanceof(CompanionAdsServiceMock);
+        expect(companionAdsService).to.be.an.instanceof(
+            CompanionAdsServiceMock
+        );
     });
 
     it("returns contentService from content()", () => {

@@ -10,14 +10,11 @@ Gpt.configure({viewableThreshold: 0});
 class App extends Component {
     onClick = () => {
         Gpt.render();
-    }
+    };
     render() {
         return (
             <div>
-                <button
-                    style={styles.button}
-                    onClick={this.onClick}
-                >
+                <button style={styles.button} onClick={this.onClick}>
                     Re-render
                 </button>
                 <div style={styles.hWrap}>

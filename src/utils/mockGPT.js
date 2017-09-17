@@ -208,7 +208,9 @@ class GPTMock {
         this.config = config;
         this.version = gptVersion;
         this.cmd = {};
-        this.cmd.push = cb => {cb();};
+        this.cmd.push = cb => {
+            cb();
+        };
     }
     pubadsReady = false;
     getVersion() {
