@@ -69,7 +69,6 @@ class App extends Component {
             test: "infinitescroll"
         };
         while (contentCnt < page * 3) {
-            // eslint-disable-line no-unmodified-loop-condition
             contents.push(
                 <Content
                     index={contentCnt % 3}
