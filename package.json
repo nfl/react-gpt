@@ -49,6 +49,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.7.2",
+    "bundlesize": "^0.14.4",
     "chai": "^3.4.1",
     "codecov.io": "^0.1.6",
     "commitizen": "^2.8.1",
@@ -89,12 +90,18 @@
     "webpack-dev-middleware": "^1.5.1",
     "webpack-dev-server": "^1.14.1"
   },
+  "peerDepencencies": {
+      "prop-types": "^15.5.10",
+      "react": "^15.0.1",
+      "react-dom": "^15.0.1"
+  },
   "scripts": {
     "commit": "git-cz",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "build": "npm run clean && npm run compile",
     "build:umd": "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
     "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/react-gpt.min.js",
+    "bundlesize": "npm run build:umd:min && bundlesize",
     "clean": "rimraf lib coverage",
     "compile": "babel src --out-dir lib",
     "examples": "webpack-dev-server --config examples/webpack.config.js --content-base examples/apps --inline",
@@ -109,5 +116,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/react-gpt.min.js",
+      "maxSize": "8.5 kB"
+    }
+  ]
 }
