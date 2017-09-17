@@ -32,6 +32,7 @@
     "lib"
   ],
   "dependencies": {
+    "bundlesize": "^0.14.4",
     "debounce": "^1.0.0",
     "deep-equal": "^1.0.1",
     "eventemitter3": "^2.0.2",
@@ -95,6 +96,7 @@
     "build": "npm run clean && npm run compile",
     "build:umd": "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
     "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/react-gpt.min.js",
+    "bundlesize": "npm run build:umd:min && bundlesize",
     "clean": "rimraf lib coverage",
     "compile": "babel src --out-dir lib",
     "examples": "webpack-dev-server --config examples/webpack.config.js --content-base examples/apps --inline",
@@ -109,5 +111,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/react-gpt.min.js",
+      "maxSize": "8.5 kB"
+    }
+  ]
 }
