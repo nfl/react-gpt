@@ -15,11 +15,10 @@ export default function isInViewport(el, [width, height] = [0, 0], offset = 0) {
         bottom: window.innerHeight,
         right: window.innerWidth
     };
-    const inViewport = (
-        rect.bottom >= (viewport.top + height * offset) &&
-        rect.right >= (viewport.left + width * offset) &&
-        rect.top <= (viewport.bottom - height * offset) &&
-        rect.left <= (viewport.right - width * offset)
-    );
+    const inViewport =
+        rect.bottom >= viewport.top + height * offset &&
+        rect.right >= viewport.left + width * offset &&
+        rect.top <= viewport.bottom - height * offset &&
+        rect.left <= viewport.right - width * offset;
     return inViewport;
 }

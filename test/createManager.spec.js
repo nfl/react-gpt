@@ -1,4 +1,9 @@
-import {createManager, AdManager, pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
+import {
+    createManager,
+    AdManager,
+    pubadsAPI,
+    APIToCallBeforeServiceEnabled
+} from "../src/createManager";
 import Events from "../src/Events";
 import {gptVersion} from "../src/utils/apiList";
 import {createManagerTest} from "../src/utils/createManagerTest";
@@ -21,7 +26,7 @@ describe("createManager", () => {
         expect(adManager._syncCorrelator).to.be.true;
     });
 
-    it("accepts pubads API before pubads is ready", (done) => {
+    it("accepts pubads API before pubads is ready", done => {
         const apiStubs = {};
         pubadsAPI.forEach(method => {
             apiStubs[method] = sinon.stub(googletag.pubads(), method);
@@ -58,7 +63,7 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("accepts pubads API after pubads is ready", (done) => {
+    it("accepts pubads API after pubads is ready", done => {
         const apiStubs = {};
         pubadsAPI.forEach(method => {
             apiStubs[method] = sinon.stub(googletag.pubads(), method);
@@ -94,8 +99,9 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("loads gpt", (done) => {
-        adManager.load("//www.googletagservices.com/tag/js/gpt.js")
+    it("loads gpt", done => {
+        adManager
+            .load("//www.googletagservices.com/tag/js/gpt.js")
             .then(result => {
                 expect(result).to.be.an("object");
                 expect(adManager.isLoaded).to.be.true;
@@ -104,9 +110,10 @@ describe("createManager", () => {
             .catch(done);
     });
 
-    it("uses gpt when already exists", (done) => {
+    it("uses gpt when already exists", done => {
         window.googletag = googletag;
-        adManager.load("//www.googletagservices.com/tag/js/gpt-invalid.js")
+        adManager
+            .load("//www.googletagservices.com/tag/js/gpt-invalid.js")
             .then(() => {
                 expect(adManager.isLoaded).to.be.true;
                 done();
@@ -114,31 +121,30 @@ describe("createManager", () => {
             .catch(done);
     });
 
-    it("handles missing url", (done) => {
+    it("handles missing url", done => {
         adManager = createManager();
-        adManager.load("")
-            .catch(err => {
-                expect(err.message).to.equal("url is missing");
-                done();
-            });
+        adManager.load("").catch(err => {
+            expect(err.message).to.equal("url is missing");
+            done();
+        });
     });
 
-    it("handles invalid url", (done) => {
+    it("handles invalid url", done => {
         adManager = createManager();
-        adManager.load("//www.googletagservices.com/tag/js/gpt-invalid.js")
+        adManager
+            .load("//www.googletagservices.com/tag/js/gpt-invalid.js")
             .catch(err => {
                 expect(err.message).to.equal("failed to load script");
                 done();
             });
     });
 
-    it("handles gpt existence", (done) => {
+    it("handles gpt existence", done => {
         adManager = createManager();
-        adManager.load("//www.google.com/jsapi")
-            .catch(err => {
-                expect(err.message).to.equal("window.googletag is not available");
-                done();
-            });
+        adManager.load("//www.google.com/jsapi").catch(err => {
+            expect(err.message).to.equal("window.googletag is not available");
+            done();
+        });
     });
 
     it("returns gpt version", () => {
@@ -146,9 +152,15 @@ describe("createManager", () => {
     });
 
     it("maintains instance list", () => {
-        const _toggleListener = sinon.stub(AdManager.prototype, "_toggleListener");
+        const _toggleListener = sinon.stub(
+            AdManager.prototype,
+            "_toggleListener"
+        );
         const addMQListener = sinon.stub(AdManager.prototype, "addMQListener");
-        const removeMQListener = sinon.stub(AdManager.prototype, "removeMQListener");
+        const removeMQListener = sinon.stub(
+            AdManager.prototype,
+            "removeMQListener"
+        );
         const instances = [{}, {}];
 
         adManager.addInstance(instances[0]);
@@ -185,9 +197,7 @@ describe("createManager", () => {
         // case 1 - missing `sizeMapping`
 
         let instance = {
-            props: {
-
-            }
+            props: {}
         };
 
         adManager.addInstance(instance);
@@ -324,8 +334,12 @@ describe("createManager", () => {
         instanceRefresh.restore();
     });
 
-    it("debounces render", (done) => {
-        const enableServices = sinon.stub(googletag, "enableServices", googletag.enableServices);
+    it("debounces render", done => {
+        const enableServices = sinon.stub(
+            googletag,
+            "enableServices",
+            googletag.enableServices
+        );
 
         adManager.once(Events.RENDER, () => {
             expect(enableServices.calledOnce).to.be.true;
@@ -338,8 +352,12 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("executes render once", (done) => {
-        const enableServices = sinon.stub(googletag, "enableServices", googletag.enableServices);
+    it("executes render once", done => {
+        const enableServices = sinon.stub(
+            googletag,
+            "enableServices",
+            googletag.enableServices
+        );
 
         adManager.once(Events.RENDER, () => {
             expect(enableServices.calledOnce).to.be.true;
@@ -358,18 +376,26 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("manages initial render", (done) => {
+    it("manages initial render", done => {
         adManager.pubadsProxy({method: "disableInitialLoad"});
         adManager.pubadsProxy({method: "collapseEmptyDivs", args: [false]});
 
-        const disableInitialLoad = sinon.stub(googletag.pubads(), "disableInitialLoad");
-        const collapseEmptyDivs = sinon.stub(googletag.pubads(), "collapseEmptyDivs");
+        const disableInitialLoad = sinon.stub(
+            googletag.pubads(),
+            "disableInitialLoad"
+        );
+        const collapseEmptyDivs = sinon.stub(
+            googletag.pubads(),
+            "collapseEmptyDivs"
+        );
 
         const instance = {
             props: {
                 sizeMapping: [{viewport: [0, 0], slot: [320, 50]}]
             },
-            notInViewport() {return false;},
+            notInViewport() {
+                return false;
+            },
             defineSlot() {},
             display() {},
             adSlot: googletag.defineSlot("/", [])
@@ -399,7 +425,7 @@ describe("createManager", () => {
         adManager.render();
     });
 
-    it("throttles foldCheck", (done) => {
+    it("throttles foldCheck", done => {
         const instance = {
             props: {
                 sizeMapping: [{viewport: [0, 0], slot: [320, 50]}]
@@ -422,8 +448,14 @@ describe("createManager", () => {
 
         const foldCheck = sinon.stub(instance, "foldCheck");
         const foldCheck2 = sinon.stub(instance2, "foldCheck");
-        const getRenderWhenViewable = sinon.spy(instance, "getRenderWhenViewable");
-        const getRenderWhenViewable2 = sinon.spy(instance2, "getRenderWhenViewable");
+        const getRenderWhenViewable = sinon.spy(
+            instance,
+            "getRenderWhenViewable"
+        );
+        const getRenderWhenViewable2 = sinon.spy(
+            instance2,
+            "getRenderWhenViewable"
+        );
         const managerFoldCheck = sinon.spy(adManager, "_foldCheck");
         const timer = sinon.spy(adManager, "_getTimer");
 
@@ -446,7 +478,9 @@ describe("createManager", () => {
         setTimeout(() => {
             expect(managerFoldCheck.callCount).to.equal(5);
             expect(timer.calledTwice).to.be.true;
-            expect(timer.returnValues[1] - timer.returnValues[0]).to.be.above(19); // timer above 20ms timeout
+            expect(timer.returnValues[1] - timer.returnValues[0]).to.be.above(
+                19
+            ); // timer above 20ms timeout
             expect(timer.returnValues[0] - start).to.be.below(5); // should start ~immediately
             expect(foldCheck.calledTwice).to.be.true;
             expect(foldCheck2.notCalled).to.be.true;
@@ -463,9 +497,12 @@ describe("createManager", () => {
         }, 100);
     });
 
-    it("renders all ads", (done) => {
+    it("renders all ads", done => {
         googletag.apiReady = false;
-        const updateCorrelator = sinon.stub(AdManager.prototype, "updateCorrelator");
+        const updateCorrelator = sinon.stub(
+            AdManager.prototype,
+            "updateCorrelator"
+        );
 
         const instance = {
             props: {},
@@ -533,22 +570,28 @@ describe("createManager", () => {
         clear.restore();
     });
 
-    it("calls prop function for gpt event", (done) => {
+    it("calls prop function for gpt event", done => {
         const listeners = [];
         const slot = googletag.defineSlot("/", []);
-        const addEventListener = sinon.stub(googletag.pubads(), "addEventListener", (eventType, cb) => {
-            if (!listeners[eventType]) {
-                listeners[eventType] = [];
+        const addEventListener = sinon.stub(
+            googletag.pubads(),
+            "addEventListener",
+            (eventType, cb) => {
+                if (!listeners[eventType]) {
+                    listeners[eventType] = [];
+                }
+                listeners[eventType].push(cb);
             }
-            listeners[eventType].push(cb);
-        });
+        );
 
         const instance = {
             props: {
                 onSlotRenderEnded() {}
             },
             adSlot: slot,
-            notInViewport() {return false;},
+            notInViewport() {
+                return false;
+            },
             defineSlot() {},
             display() {}
         };
@@ -563,7 +606,10 @@ describe("createManager", () => {
             });
         });
 
-        const onSlotRenderEnded = sinon.stub(instance.props, "onSlotRenderEnded");
+        const onSlotRenderEnded = sinon.stub(
+            instance.props,
+            "onSlotRenderEnded"
+        );
 
         adManager.addInstance(instance);
 

@@ -8,7 +8,7 @@ class Page extends Component {
     static propTypes = {
         adUnitPath: PropTypes.string,
         params: PropTypes.object
-    }
+    };
 
     render() {
         const {adUnitPath, params} = this.props;

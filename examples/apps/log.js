@@ -11,9 +11,18 @@ GPT.on(Events.SLOT_RENDER_ENDED, event => {
     }, {});
 
     if (!event.isEmpty && event.size) {
-        console.log(`ad creative '${event.creativeId}' is rendered to slot '${divId}' of size '${event.size[0]}x${event.size[1]}'`, event, targeting);
+        console.log(
+            `ad creative '${event.creativeId}' is rendered to slot '${divId}' of size '${event
+                .size[0]}x${event.size[1]}'`,
+            event,
+            targeting
+        );
     } else {
-        console.log(`ad rendered but empty, div id is ${divId}`, event, targeting);
+        console.log(
+            `ad rendered but empty, div id is ${divId}`,
+            event,
+            targeting
+        );
     }
 });
 

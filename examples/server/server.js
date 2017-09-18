@@ -12,15 +12,20 @@ import {renderToString} from "react-dom/server";
 
 import routes from "./routes";
 
-const globalStyle = fs.readFileSync(path.resolve(__dirname, "../apps/global.css"), "utf8");
+const globalStyle = fs.readFileSync(
+    path.resolve(__dirname, "../apps/global.css"),
+    "utf8"
+);
 
 const app = new Express();
 const port = 8080;
 
-app.use(webpackDevMiddleware(webpack(webpackConfig), {
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath
-}));
+app.use(
+    webpackDevMiddleware(webpack(webpackConfig), {
+        noInfo: true,
+        publicPath: webpackConfig.output.publicPath
+    })
+);
 app.use(handleRoutes);
 
 function handleRoutes(req, res) {
@@ -38,7 +43,9 @@ function handleRoutes(req, res) {
 
     const App = routes[routeName].app;
     const title = routes[routeName].title;
-    const html = renderToString(<App radiumConfig={{userAgent: req.headers["user-agent"]}} />);
+    const html = renderToString(
+        <App radiumConfig={{userAgent: req.headers["user-agent"]}} />
+    );
 
     res.send(renderPage(routeName, html, title));
 }
@@ -100,10 +107,12 @@ function renderPage(name, html, title) {
     `;
 }
 
-app.listen(port, (error) => {
+app.listen(port, error => {
     if (error) {
         console.error(error);
     } else {
-        console.info(`==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
+        console.info(
+            `==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`
+        );
     }
 });

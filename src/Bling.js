@@ -47,10 +47,7 @@ class Bling extends Component {
          *
          * @property slotSize
          */
-        slotSize: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string
-        ]),
+        slotSize: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
         /**
          * An optional array of object which contains an array of viewport size and slot size.
          * This needs to be set if the ad needs to serve different ad sizes per different viewport sizes (responsive ad).
@@ -68,10 +65,12 @@ class Bling extends Component {
          *
          * @property sizeMapping
          */
-        sizeMapping: PropTypes.arrayOf(PropTypes.shape({
-            viewport: PropTypes.array,
-            slot: PropTypes.array
-        })),
+        sizeMapping: PropTypes.arrayOf(
+            PropTypes.shape({
+                viewport: PropTypes.array,
+                slot: PropTypes.array
+            })
+        ),
         /**
          * An optional flag to indicate whether an ad slot should be out-of-page slot.
          *
@@ -186,9 +185,9 @@ class Bling extends Component {
          * @property style
          */
         style: PropTypes.object
-    }
+    };
 
-	/**
+    /**
      * An array of prop names which can reflect to the ad by calling `refresh`.
      *
      * @property refreshableProps
@@ -204,19 +203,14 @@ class Bling extends Component {
         "companionAdService",
         "forceSafeFrame",
         "safeFrameConfig"
-    ]
+    ];
     /**
      * An array of prop names which requires to create a new ad slot and render as a new ad.
      *
      * @property reRenderProps
      * @static
      */
-    static reRenderProps = [
-        "adUnitPath",
-        "slotSize",
-        "outOfPage",
-        "content"
-    ]
+    static reRenderProps = ["adUnitPath", "slotSize", "outOfPage", "content"];
     /**
      * An instance of ad manager.
      *
@@ -224,8 +218,8 @@ class Bling extends Component {
      * @private
      * @static
      */
-    static _adManager = createManager()
-	/**
+    static _adManager = createManager();
+    /**
      *
      * @property
      * @private
@@ -253,7 +247,7 @@ class Bling extends Component {
          * An optional function for the filtered props and the next props to perform equality check.
          */
         propsEqual: deepEqual
-    }
+    };
 
     static on(eventType, cb) {
         Bling._on("on", eventType, cb);
@@ -288,7 +282,7 @@ class Bling extends Component {
             ...config
         };
     }
-	/**
+    /**
      * Returns the GPT version.
      *
      * @method getGPTVersion
@@ -308,7 +302,7 @@ class Bling extends Component {
     static getPubadsVersion() {
         return Bling._adManager.getPubadsVersion();
     }
-	/**
+    /**
      * Sets a flag to indicate whether the correlator value should always be same across the ads in the page or not.
      *
      * @method syncCorrelator
@@ -337,7 +331,7 @@ class Bling extends Component {
     static refresh(slots, options) {
         Bling._adManager.refresh(slots, options);
     }
-	/**
+    /**
      * Clears the ads for the specified ad slots, if no slots are provided, all the ads will be cleared.
      *
      * @method clear
@@ -365,25 +359,33 @@ class Bling extends Component {
     state = {
         scriptLoaded: false,
         inViewport: false
-    }
+    };
 
     get adSlot() {
         return this._adSlot;
     }
 
     get viewableThreshold() {
-        return this.props.viewableThreshold >= 0 ? this.props.viewableThreshold : Bling._config.viewableThreshold;
+        return this.props.viewableThreshold >= 0
+            ? this.props.viewableThreshold
+            : Bling._config.viewableThreshold;
     }
 
     componentDidMount() {
         Bling._adManager.addInstance(this);
-        Bling._adManager.load(Bling._config.seedFileUrl).then(this.onScriptLoaded.bind(this)).catch(this.onScriptError.bind(this));
+        Bling._adManager
+            .load(Bling._config.seedFileUrl)
+            .then(this.onScriptLoaded.bind(this))
+            .catch(this.onScriptError.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
         const {propsEqual} = Bling._config;
         const {sizeMapping} = this.props;
-        if ((nextProps.sizeMapping || sizeMapping) && !propsEqual(nextProps.sizeMapping, sizeMapping)) {
+        if (
+            (nextProps.sizeMapping || sizeMapping) &&
+            !propsEqual(nextProps.sizeMapping, sizeMapping)
+        ) {
             Bling._adManager.removeMQListener(this, nextProps);
         }
     }
@@ -393,8 +395,8 @@ class Bling extends Component {
         // otherwise, just refresh
         const {scriptLoaded, inViewport} = nextState;
         const notInViewport = this.notInViewport(nextProps, nextState);
-        const inViewportChanged = (this.state.inViewport !== inViewport);
-        const isScriptLoaded = (this.state.scriptLoaded !== scriptLoaded);
+        const inViewportChanged = this.state.inViewport !== inViewport;
+        const isScriptLoaded = this.state.scriptLoaded !== scriptLoaded;
 
         // Exit early for visibility change, before executing deep equality check.
         if (notInViewport) {
@@ -404,10 +406,23 @@ class Bling extends Component {
         }
 
         const {filterProps, propsEqual} = Bling._config;
-        const refreshableProps = filterProps(Bling.refreshableProps, this.props, nextProps);
-        const reRenderProps = filterProps(Bling.reRenderProps, this.props, nextProps);
-        const shouldRender = !propsEqual(reRenderProps.props, reRenderProps.nextProps);
-        const shouldRefresh = !shouldRender && !propsEqual(refreshableProps.props, refreshableProps.nextProps);
+        const refreshableProps = filterProps(
+            Bling.refreshableProps,
+            this.props,
+            nextProps
+        );
+        const reRenderProps = filterProps(
+            Bling.reRenderProps,
+            this.props,
+            nextProps
+        );
+        const shouldRender = !propsEqual(
+            reRenderProps.props,
+            reRenderProps.nextProps
+        );
+        const shouldRefresh =
+            !shouldRender &&
+            !propsEqual(refreshableProps.props, refreshableProps.nextProps);
         // console.log(`shouldRefresh: ${shouldRefresh}, shouldRender: ${shouldRender}, isScriptLoaded: ${isScriptLoaded}, syncCorrelator: ${Bling._adManager._syncCorrelator}`);
 
         if (shouldRefresh) {
@@ -466,11 +481,16 @@ class Bling extends Component {
     }
 
     onScriptError(err) {
-        console.warn(`Ad: Failed to load gpt for ${Bling._config.seedFileUrl}`, err);
+        console.warn(
+            `Ad: Failed to load gpt for ${Bling._config.seedFileUrl}`,
+            err
+        );
     }
 
     getRenderWhenViewable(props = this.props) {
-        return props.renderWhenViewable !== undefined ? props.renderWhenViewable : Bling._config.renderWhenViewable;
+        return props.renderWhenViewable !== undefined
+            ? props.renderWhenViewable
+            : Bling._config.renderWhenViewable;
     }
 
     foldCheck() {
@@ -486,7 +506,11 @@ class Bling extends Component {
             slotSize = [0, 0];
         }
 
-        const inViewport = Bling._adManager.isInViewport(ReactDOM.findDOMNode(this), slotSize, this.viewableThreshold);
+        const inViewport = Bling._adManager.isInViewport(
+            ReactDOM.findDOMNode(this),
+            slotSize,
+            this.viewableThreshold
+        );
         if (inViewport) {
             this.setState({inViewport: true});
         }
@@ -495,9 +519,11 @@ class Bling extends Component {
     defineSizeMapping(adSlot, sizeMapping) {
         if (sizeMapping) {
             Bling._adManager.addMQListener(this, this.props);
-            const sizeMappingArray = sizeMapping.reduce((mapping, size) => {
-                return mapping.addSize(size.viewport, size.slot);
-            }, Bling._adManager.googletag.sizeMapping()).build();
+            const sizeMappingArray = sizeMapping
+                .reduce((mapping, size) => {
+                    return mapping.addSize(size.viewport, size.slot);
+                }, Bling._adManager.googletag.sizeMapping())
+                .build();
             adSlot.defineSizeMapping(sizeMappingArray);
         }
     }
@@ -532,7 +558,9 @@ class Bling extends Component {
                 companionAdsService.enableSyncLoading();
             }
             if (serviceConfig.hasOwnProperty("refreshUnfilledSlots")) {
-                companionAdsService.setRefreshUnfilledSlots(serviceConfig.refreshUnfilledSlots);
+                companionAdsService.setRefreshUnfilledSlots(
+                    serviceConfig.refreshUnfilledSlots
+                );
             }
         }
     }
@@ -564,18 +592,22 @@ class Bling extends Component {
     }
 
     defineSlot() {
-        const {
-            adUnitPath,
-            outOfPage
-        } = this.props;
+        const {adUnitPath, outOfPage} = this.props;
         const divId = this._divId;
         const slotSize = this.getSlotSize();
 
         if (!this._adSlot) {
             if (outOfPage) {
-                this._adSlot = Bling._adManager.googletag.defineOutOfPageSlot(adUnitPath, divId);
+                this._adSlot = Bling._adManager.googletag.defineOutOfPageSlot(
+                    adUnitPath,
+                    divId
+                );
             } else {
-                this._adSlot = Bling._adManager.googletag.defineSlot(adUnitPath, slotSize || [], divId);
+                this._adSlot = Bling._adManager.googletag.defineSlot(
+                    adUnitPath,
+                    slotSize || [],
+                    divId
+                );
             }
         }
 
@@ -658,11 +690,17 @@ class Bling extends Component {
         if (content) {
             Bling._adManager.googletag.content().setContent(adSlot, content);
         } else {
-            if (!Bling._adManager._disableInitialLoad && !Bling._adManager._syncCorrelator) {
+            if (
+                !Bling._adManager._disableInitialLoad &&
+                !Bling._adManager._syncCorrelator
+            ) {
                 Bling._adManager.updateCorrelator();
             }
             Bling._adManager.googletag.display(divId);
-            if (Bling._adManager._disableInitialLoad && !Bling._adManager._initialRender) {
+            if (
+                Bling._adManager._disableInitialLoad &&
+                !Bling._adManager._initialRender
+            ) {
                 this.refresh();
             }
         }
@@ -711,7 +749,10 @@ class Bling extends Component {
             if (slotSize === "fluid") {
                 slotSize = ["auto", "auto"];
             }
-            const emptyStyle = slotSize && {width: slotSize[0], height: slotSize[1]};
+            const emptyStyle = slotSize && {
+                width: slotSize[0],
+                height: slotSize[1]
+            };
             // render node element instead of script element so that `inViewport` check works.
             return <div style={emptyStyle} />;
         }
@@ -729,7 +770,10 @@ class Bling extends Component {
 }
 
 // proxy pubads API through Bling
-export default hoistStatics(Bling, pubadsAPI.reduce((api, method) => {
-    api[method] = (...args) => Bling._adManager.pubadsProxy({method, args});
-    return api;
-}, {}));
+export default hoistStatics(
+    Bling,
+    pubadsAPI.reduce((api, method) => {
+        api[method] = (...args) => Bling._adManager.pubadsProxy({method, args});
+        return api;
+    }, {})
+);
