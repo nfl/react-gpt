@@ -1,3 +1,16 @@
+<a name="0.3.0"></a>
+## [0.3.0](https://github.com/nfl/react-gpt/compare/v0.2.5...v0.3.0) (2017-09-18)
+
+### Code Refactoring
+
+* Throttles scroll-check to render ad faster ([7130060a](https://github.com/nfl/react-gpt/commit/7130060a))
+* Use smaller invariant / canUseDom dependencies ([b187381](https://github.com/nfl/react-gpt/commit/b187381))
+
+### Features
+
+* Check bundle-size on PR ([8e51e26](https://github.com/nfl/react-gpt/commit/8e51e26))
+* Upgrade eslint and introduce prettier ([17c8b89](https://github.com/nfl/react-gpt/commit/17c8b89))
+
 <a name="0.2.5"></a>
 ## [0.2.5](https://github.com/nfl/react-gpt/compare/v0.2.4...v0.2.5) (2017-07-31)
 
