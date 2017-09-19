@@ -3,6 +3,7 @@
     "version": "0.3.0",
     "description": "A react display ad component using Google Publisher Tag",
     "main": "lib/index.js",
+    "jsnext:main": "es/index.js",
     "contributors": [
         {
             "name": "NFL Engineering"
@@ -97,6 +98,7 @@
         "commit": "git-cz",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "build": "npm run clean && npm run compile",
+        "build:es": "BABEL_ENV=es babel --copy-files ./src -d es",
         "build:umd":
             "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
         "build:umd:min":
@@ -111,7 +113,7 @@
             "npm run build && env BABEL_ENV=examples node examples/server/index.js",
         "pretest": "npm run build",
         "prepublish":
-            "npm run build && npm run build:umd && npm run build:umd:min",
+            "npm run build && npm run build:es && npm run build:umd && npm run build:umd:min",
         "test": "npm run lint && karma start",
         "update-apilist": "node ./scripts/updateAPIList.js"
     },
