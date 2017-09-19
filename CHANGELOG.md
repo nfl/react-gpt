@@ -1,3 +1,11 @@
+<a name="1.0.0"></a>
+## [1.0.0](https://github.com/nfl/react-gpt/compare/v0.3.0...v1.0.0) (2017-09-18)
+
+### Features
+
+* Export AdManager ([9ed1807](https://github.com/nfl/react-gpt/commit/9ed1807))
+* Build and export es modules ([2d7a3ec](https://github.com/nfl/react-gpt/commit/2d7a3ec))
+
 <a name="0.3.0"></a>
 ## [0.3.0](https://github.com/nfl/react-gpt/compare/v0.2.5...v0.3.0) (2017-09-18)
 
