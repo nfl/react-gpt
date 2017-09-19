@@ -1,3 +1,12 @@
+<a name="1.0.1"></a>
+# [1.0.1](https://github.com/nfl/react-gpt/compare/v1.0.0...v1.0.1) (2017-09-19)
+
+
+### Bug Fixes
+
+* **package.json:** Export es modules ([#54](https://github.com/nfl/react-gpt/issues/54)) ([2d7a3ec](https://github.com/nfl/react-gpt/commit/2d7a3ec)), closes [#29](https://github.com/nfl/react-gpt/issues/29)
+
+
 <a name="1.0.0"></a>
 ## [1.0.0](https://github.com/nfl/react-gpt/compare/v0.3.0...v1.0.0) (2017-09-18)
 
