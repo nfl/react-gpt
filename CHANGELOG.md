@@ -1,19 +1,21 @@
 <a name="1.0.1"></a>
-# [1.0.1](https://github.com/nfl/react-gpt/compare/v1.0.0...v1.0.1) (2017-09-19)
+
+## [1.0.1](https://github.com/nfl/react-gpt/compare/v1.0.0...v1.0.1) (2017-09-19)
 
 
 ### Bug Fixes
 
-* **package.json:** Export es modules ([#54](https://github.com/nfl/react-gpt/issues/54)) ([2d7a3ec](https://github.com/nfl/react-gpt/commit/2d7a3ec)), closes [#29](https://github.com/nfl/react-gpt/issues/29)
-
+* **package.json:** Add es folder to published package ([2aa1a03](https://github.com/nfl/react-gpt/commit/2aa1a03))
 
 <a name="1.0.0"></a>
 ## [1.0.0](https://github.com/nfl/react-gpt/compare/v0.3.0...v1.0.0) (2017-09-18)
 
 ### Features
 
-* Export AdManager ([9ed1807](https://github.com/nfl/react-gpt/commit/9ed1807))
-* Build and export es modules ([2d7a3ec](https://github.com/nfl/react-gpt/commit/2d7a3ec))
+* **createManager:** Export AdManager ([#53](https://github.com/nfl/react-gpt/issues/53)) ([9ed1807](https://github.com/nfl/react-gpt/commit/9ed1807)), closes [#42](https://github.com/nfl/react-gpt/issues/42)
+* **package.json:** Add Yarn ([#38](https://github.com/nfl/react-gpt/issues/38)) ([8b7a570](https://github.com/nfl/react-gpt/commit/8b7a570))
+* **package.json:** Export es modules ([#54](https://github.com/nfl/react-gpt/issues/54)) ([2d7a3ec](https://github.com/nfl/react-gpt/commit/2d7a3ec)), closes [#29](https://github.com/nfl/react-gpt/issues/29)
+
 
 <a name="0.3.0"></a>
 ## [0.3.0](https://github.com/nfl/react-gpt/compare/v0.2.5...v0.3.0) (2017-09-18)
