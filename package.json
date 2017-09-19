@@ -126,7 +126,7 @@
     "bundlesize": [
         {
             "path": "./dist/react-gpt.min.js",
-            "maxSize": "8.5 kB"
+            "maxSize": "10.5 kB"
         }
     ]
 }
