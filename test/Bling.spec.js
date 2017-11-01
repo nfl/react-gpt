@@ -2,6 +2,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import ReactTestUtils from "react-dom/test-utils";
+import ShallowRenderer from "react-test-renderer/shallow";
 import Bling from "../src/Bling";
 import Events from "../src/Events";
 import {pubadsAPI, APIToCallBeforeServiceEnabled} from "../src/createManager";
@@ -25,15 +26,18 @@ describe("Bling", () => {
     });
 
     it("throws when either slotSize or sizeMapping is missing", () => {
-        expect(() => {
-            ReactTestUtils.renderIntoDocument(
-                <Bling adUnitPath="/4595/nfl.test.open" />
-            );
-        }).to.throw("Either 'slotSize' or 'sizeMapping' prop needs to be set.");
+        const renderBling = () => {
+            const renderer = new ShallowRenderer();
+            renderer.render(<Bling adUnitPath="/4595/nfl.test.open" />);
+        };
+
+        expect(renderBling).to.throw(
+            "Either 'slotSize' or 'sizeMapping' prop needs to be set."
+        );
     });
 
     it("initially renders empty div with style", () => {
-        const renderer = ReactTestUtils.createRenderer();
+        const renderer = new ShallowRenderer();
         renderer.render(
             <Bling adUnitPath="/4595/nfl.test.open" slotSize={[728, 90]} />
         );
