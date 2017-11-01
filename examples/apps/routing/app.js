@@ -61,8 +61,8 @@ class App extends Component {
 }
 
 class AppContainer extends Component {
+    // eslint-disable-next-line react/sort-comp
     routes = {
-        // eslint-disable-line react/sort-comp
         "/Travel/Europe": {component: Home},
         "/Travel/Europe/France": {component: Page, params: {id: "France"}},
         "/Travel/Europe/Spain": {component: Page, params: {id: "Spain"}}
