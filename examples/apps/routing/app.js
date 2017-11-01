@@ -61,6 +61,13 @@ class App extends Component {
 }
 
 class AppContainer extends Component {
+    routes = {
+        // eslint-disable-line react/sort-comp
+        "/Travel/Europe": {component: Home},
+        "/Travel/Europe/France": {component: Page, params: {id: "France"}},
+        "/Travel/Europe/Spain": {component: Page, params: {id: "Spain"}}
+    };
+
     state = {
         routeComponent: this.routes["/Travel/Europe"].component
     };
@@ -80,13 +87,6 @@ class AppContainer extends Component {
     }
 
     history = createHistory();
-
-    routes = {
-        // eslint-disable-line react/sort-comp
-        "/Travel/Europe": {component: Home},
-        "/Travel/Europe/France": {component: Page, params: {id: "France"}},
-        "/Travel/Europe/Spain": {component: Page, params: {id: "Spain"}}
-    };
 
     render() {
         return (
