@@ -1,6 +1,6 @@
-<a name="1.1.0"></a>
+<a name="1.1.1"></a>
 
-## [1.1.0](https://github.com/nfl/react-gpt/compare/v1.0.1...v1.1.0) (2017-11-08)
+## [1.1.1](https://github.com/nfl/react-gpt/compare/v1.0.1...v1.1.1) (2017-11-08)
 
 ### Bug Fixes
 
