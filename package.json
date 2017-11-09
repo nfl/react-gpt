@@ -25,14 +25,7 @@
     "bugs": {
         "url": "https://github.com/nfl/react-gpt/issues"
     },
-    "files": [
-        "*.md",
-        "docs",
-        "es",
-        "src",
-        "dist",
-        "lib"
-    ],
+    "files": ["*.md", "docs", "es", "src", "dist", "lib"],
     "dependencies": {
         "deep-equal": "^1.0.1",
         "eventemitter3": "^2.0.2",
@@ -61,11 +54,11 @@
         "core-js": "^2.2.2",
         "cz-conventional-changelog": "^1.1.6",
         "eslint": "4.7.0",
-        "eslint-config-prettier": "^2.5.0",
-        "eslint-plugin-prettier": "^2.2.0",
         "eslint-config-nfl": "12.0.0",
+        "eslint-config-prettier": "^2.5.0",
         "eslint-plugin-import": "2.7.0",
         "eslint-plugin-mocha": "4.11.0",
+        "eslint-plugin-prettier": "^2.2.0",
         "eslint-plugin-react": "7.3.0",
         "express": "^4.13.4",
         "history": "^4.3.0",
@@ -85,9 +78,10 @@
         "prop-types": "^15.5.10",
         "querystring": "^0.2.0",
         "radium": "^0.18.1",
-        "react": "^15.0.1",
+        "react": "^16.0.0",
         "react-addons-test-utils": "^15.0.1",
-        "react-dom": "^15.0.1",
+        "react-dom": "^16.0.0",
+        "react-test-renderer": "^16.0.0",
         "rimraf": "^2.5.2",
         "serve-static": "^1.10.2",
         "sinon": "^1.17.2",
@@ -98,24 +92,29 @@
     },
     "peerDependencies": {
         "prop-types": "^15.5.10",
-        "react": "^15.0.1",
-        "react-dom": "^15.0.1"
+        "react": "^15.0.1 || ^16.0.0",
+        "react-dom": "^15.0.1 || ^16.0.0"
     },
     "scripts": {
         "commit": "git-cz",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "build": "npm run clean && npm run compile",
         "build:es": "BABEL_ENV=es babel --copy-files ./src -d es",
-        "build:umd": "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
-        "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/react-gpt.min.js",
+        "build:umd":
+            "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
+        "build:umd:min":
+            "NODE_ENV=production webpack -p src/index.js dist/react-gpt.min.js",
         "bundlesize": "npm run build:umd:min && bundlesize",
         "clean": "rimraf lib coverage dist lib es",
         "compile": "babel src --out-dir lib",
-        "examples": "webpack-dev-server --config examples/webpack.config.js --content-base examples/apps --inline",
+        "examples":
+            "webpack-dev-server --config examples/webpack.config.js --content-base examples/apps --inline",
         "lint": "eslint --fix src test examples",
-        "start": "npm run build && env BABEL_ENV=examples node examples/server/index.js",
+        "start":
+            "npm run build && env BABEL_ENV=examples node examples/server/index.js",
         "pretest": "npm run build",
-        "prepublish": "npm run build && npm run build:es && npm run build:umd && npm run build:umd:min",
+        "prepublish":
+            "npm run build && npm run build:es && npm run build:umd && npm run build:umd:min",
         "test": "npm run lint && karma start",
         "update-apilist": "node ./scripts/updateAPIList.js"
     },
