@@ -6,13 +6,14 @@
 
 * Fixed bug in example Router project ([7687ee9](https://github.com/nfl/react-gpt/commit/7687ee9))
 
-<a name="1.0.1"></a>
-
 ### Code Refactoring
 
 * Updated to support React 16 and unit tests refactored for React 16 ([84264e7](https://github.com/nfl/react-gpt/commit/84264e7))
 
+<a name="1.0.1"></a>
+
 ## [1.0.1](https://github.com/nfl/react-gpt/compare/v1.0.0...v1.0.1) (2017-09-19)
+
 
 ### Bug Fixes
 
