@@ -425,7 +425,7 @@ class Bling extends Component {
             !propsEqual(refreshableProps.props, refreshableProps.nextProps);
         // console.log(`shouldRefresh: ${shouldRefresh}, shouldRender: ${shouldRender}, isScriptLoaded: ${isScriptLoaded}, syncCorrelator: ${Bling._adManager._syncCorrelator}`);
 
-        if (shouldRefresh) {
+        if (shouldRefresh && this._adSlot) {
             this.configureSlot(this._adSlot, nextProps);
         }
 

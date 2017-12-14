@@ -1,6 +1,6 @@
 {
-    "name": "react-gpt",
-    "version": "1.1.1",
+    "name": "@poki/react-gpt",
+    "version": "1.1.2",
     "description": "A react display ad component using Google Publisher Tag",
     "main": "lib/index.js",
     "jsnext:main": "es/index.js",
@@ -32,7 +32,6 @@
         "exenv": "^1.2.2",
         "hoist-non-react-statics": "^1.0.5",
         "invariant": "^2.2.2",
-        "prettier": "^1.7.0",
         "throttle-debounce": "^1.0.1"
     },
     "devDependencies": {
@@ -75,6 +74,7 @@
         "karma-webpack": "^1.7.0",
         "mocha": "^3.1.2",
         "phantom": "^2.0.4",
+        "prettier": "^1.7.0",
         "prop-types": "^15.5.10",
         "querystring": "^0.2.0",
         "radium": "^0.18.1",
