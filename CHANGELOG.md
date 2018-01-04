@@ -1,3 +1,11 @@
+<a name="1.1.2"></a>
+
+## [1.1.2](https://github.com/nfl/react-gpt/compare/v1.1.1...v1.1.2) (2018-01-04)
+
+### Bug Fixes
+
+* Removed test util dependencies from distribution ([27187e0](https://github.com/nfl/react-gpt/commit/27187e0))
+
 <a name="1.1.1"></a>
 
 ## [1.1.1](https://github.com/nfl/react-gpt/compare/v1.0.1...v1.1.1) (2017-11-08)
