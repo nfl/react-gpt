@@ -1,10 +1,21 @@
-<a name="1.1.2"></a>
+<a name="2.0.0"></a>
 
-## [1.1.2](https://github.com/nfl/react-gpt/compare/v1.1.1...v1.1.2) (2018-01-04)
+## [2.0.0](https://github.com/nfl/react-gpt/compare/v1.1.1...v2.0.0) (2018-01-04)
 
 ### Bug Fixes
 
 * Removed test util dependencies from distribution ([27187e0](https://github.com/nfl/react-gpt/commit/27187e0))
+
+### Migration notes
+
+**< 2.0.0** you may have imported `createManagerTest` like this:
+```
+import {createManagerTest} from "react-gpt";
+```
+**>= 2.0.0** you now need to import `createManagerTest` like this:
+```
+import {createManagerTest} from "react-gpt/es/utils/createManagerTest";
+```
 
 <a name="1.1.1"></a>
 
