@@ -405,6 +405,11 @@ class Bling extends Component {
             return true;
         }
 
+        // Exit early if script is not loaded due to ad blockers
+        if (!isScriptLoaded) {
+            return false;
+        }
+
         const {filterProps, propsEqual} = Bling._config;
         const refreshableProps = filterProps(
             Bling.refreshableProps,
