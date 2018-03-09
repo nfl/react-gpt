@@ -19,6 +19,7 @@ import {createManager, pubadsAPI} from "./createManager";
  * @fires Bling#Events.SLOT_RENDER_ENDED
  * @fires Bling#Events.IMPRESSION_VIEWABLE
  * @fires Bling#Events.SLOT_VISIBILITY_CHANGED
+ * @fires Bling#Events.SLOT_LOADED
  */
 class Bling extends Component {
     static propTypes = {
@@ -154,6 +155,12 @@ class Bling extends Component {
          * @property onSlotVisibilityChanged
          */
         onSlotVisibilityChanged: PropTypes.func,
+        /**
+         * An optional event handler function for `googletag.events.SlotOnloadEvent`.
+         *
+         * @property onSlotLoad
+         */
+        onSlotLoad: PropTypes.func,
         /**
          * An optional flag to indicate whether an ad should only render when it's fully in the viewport area.
          *
