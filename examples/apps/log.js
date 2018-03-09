@@ -42,4 +42,11 @@ GPT.on(Events.SLOT_VISIBILITY_CHANGED, event => {
     const divId = slot.getSlotElementId();
     const sizes = slot.getSizes();
     console.log(`SLOT_VISIBILITY_CHANGED for ${divId}(${JSON.stringify(sizes)}) to ${event.inViewPercentage}`, event);
+});
+
+GPT.on(Events.SLOT_LOADED, event => {
+    const slot = event.slot;
+    const divId = slot.getSlotElementId();
+    const sizes = slot.getSizes();
+    console.log(`SLOT_LOADED for ${divId}(${JSON.stringify(sizes)})`, event);
 });*/
