@@ -720,13 +720,10 @@ class Bling extends Component {
         if (adSlot && adSlot.hasOwnProperty("getServices")) {
             // googletag.ContentService doesn't clear content
             const services = adSlot.getServices();
-            console.log("clear 2");
             if (this._divId && services.some(s => !!s.setContent)) {
-                console.log("clear 3");
                 document.getElementById(this._divId).innerHTML = "";
                 return;
             }
-            console.log("clear 4");
             Bling._adManager.clear([adSlot]);
         }
     }
