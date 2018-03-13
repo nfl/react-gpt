@@ -158,9 +158,9 @@ class Bling extends Component {
         /**
          * An optional event handler function for `googletag.events.SlotOnloadEvent`.
          *
-         * @property onSlotLoad
+         * @property onSlotOnload
          */
-        onSlotLoad: PropTypes.func,
+        onSlotOnload: PropTypes.func,
         /**
          * An optional flag to indicate whether an ad should only render when it's fully in the viewport area.
          *
