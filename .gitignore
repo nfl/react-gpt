@@ -4,4 +4,5 @@ lib/
 dist/
 coverage/
 npm-debug.log
+yarn-error.log
 .DS_Store
