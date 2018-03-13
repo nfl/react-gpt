@@ -25,7 +25,7 @@ A React component which renders [GPT](https://support.google.com/dfp_sb/answer/1
 - `onSlotRenderEnded`(optional) - An optional event handler function for `googletag.events.SlotRenderEndedEvent`.
 - `onImpressionViewable`(optional) - An optional event handler function for `googletag.events.ImpressionViewableEvent`.
 - `onSlotVisibilityChanged`(optional) - An optional event handler function for `googletag.events.slotVisibilityChangedEvent`.
-- `onSlotLoad`(optional) - An optional event handler function for `googletag.events.SlotOnloadEvent`.
+- `onSlotOnload`(optional) - An optional event handler function for `googletag.events.SlotOnloadEvent`.
 - `renderWhenViewable`(optional) - An optional flag to indicate whether an ad should only render when it's fully in the viewport area.
 - `viewableThreshold`(optional) - An optional number to indicate how much percentage of an ad area needs to be in a viewable area before rendering. Acceptable range is between `0` and `1`.
 - `onScriptLoaded`(optional) - An optional call back function to notify when the script is loaded.
