@@ -1,6 +1,6 @@
 ## Refresh vs Re-render
 
-GPT [requires ad unit path and size to constructs an ad slot](https://developers.google.com/doubleclick-gpt/reference#googletag.defineSlot), for that reason, when `adUnitPath` or `slotSize` props change, Rect GPT destroys an old ad slot and create a new one which results in rendering a new ad.
+GPT [requires ad unit path and size to construct an ad slot](https://developers.google.com/doubleclick-gpt/reference#googletag.defineSlot), for that reason, when `adUnitPath` or `slotSize` props change, React GPT destroys an old ad slot and creates a new one which results in rendering a new ad.
 Additionally, when `outOfPage` or `content` props change, React GPT re-renders an ad to create a new ad slot to reflect these props.
 Any other ad slot related props are reflected by [refreshing an ad](https://developers.google.com/doubleclick-gpt/reference#googletag.PubAdsService_refresh).
 
