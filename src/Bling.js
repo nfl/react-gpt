@@ -477,13 +477,20 @@ class Bling extends Component {
         }
     }
 
+    isAdMounted() {
+        return Bling._adManager.getMountedInstances().indexOf(this) !== -1;
+    }
+
     onScriptLoaded() {
         const { onScriptLoaded } = this.props;
 
         if (this.getRenderWhenViewable()) {
             this.foldCheck();
         }
-        this.setState({ scriptLoaded: true }, onScriptLoaded); // eslint-disable-line react/no-did-mount-set-state
+
+        if (this.isAdMounted()) {
+            this.setState({ scriptLoaded: true }, onScriptLoaded); // eslint-disable-line react/no-did-mount-set-state
+        }
     }
 
     onScriptError(err) {
