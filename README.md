@@ -20,7 +20,7 @@ A [React](https://github.com/facebook/react) component for [Google Publisher Tag
 
 ## Features
 
- * Supports all rendering modes (single request mode, async rendering node and *sync rendering mode)
+ * Supports all rendering modes (single request mode, async rendering mode and *sync rendering mode)
  * Supports responsive ads.
  * Supports interstitial ads.
  * Supports lazy render.
