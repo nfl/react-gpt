@@ -455,7 +455,8 @@ export class AdManager extends EventEmitter {
         if (!this.pubadsReady) {
             return false;
         }
-        this.googletag.pubads().updateCorrelator();
+        // this.googletag.pubads().updateCorrelator();
+        this.googletag.destroySlots()
 
         return true;
     }
