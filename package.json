@@ -1,6 +1,6 @@
 {
-    "name": "react-gpt",
-    "version": "2.0.1",
+    "name": "@atmedia/react-gpt",
+    "version": "2.1.0",
     "description": "A react display ad component using Google Publisher Tag",
     "main": "lib/index.js",
     "jsnext:main": "es/index.js",
@@ -12,7 +12,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/nfl/react-gpt"
+        "url": "https://github.com/apartmenttherapy/react-gpt"
     },
     "keywords": [
         "react-gpt",
@@ -23,7 +23,7 @@
         "google publisher tags"
     ],
     "bugs": {
-        "url": "https://github.com/nfl/react-gpt/issues"
+        "url": "https://github.com/apartmenttherapy/react-gpt/issues"
     },
     "files": ["*.md", "docs", "es", "src", "dist", "lib"],
     "dependencies": {
