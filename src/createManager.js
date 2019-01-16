@@ -429,7 +429,8 @@ export class AdManager extends EventEmitter {
         const instances = this.getMountedInstances();
         instances.forEach((instance, i) => {
             if (i === 0) {
-                this.updateCorrelator();
+                this.googletag.destroySlots() //Fix for removing deprecated function "this.googletag.pubads().updateCorrelator();"
+                // this.updateCorrelator();
             }
             instance.forceUpdate();
         });
@@ -455,8 +456,7 @@ export class AdManager extends EventEmitter {
         if (!this.pubadsReady) {
             return false;
         }
-        // this.googletag.pubads().updateCorrelator();
-        this.googletag.destroySlots()
+        //this.googletag.pubads().updateCorrelator();
 
         return true;
     }
