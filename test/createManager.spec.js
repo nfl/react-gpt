@@ -521,14 +521,12 @@ describe("createManager", () => {
         adManager.addInstance(instance2);
 
         setTimeout(() => {
-            expect(updateCorrelator.calledOnce).to.be.false;
             expect(forceUpdate.calledOnce).to.be.false;
             expect(forceUpdate2.calledOnce).to.be.false;
 
             googletag.apiReady = true;
 
             setTimeout(() => {
-                expect(updateCorrelator.calledOnce).to.be.true;
                 expect(forceUpdate.calledOnce).to.be.true;
                 expect(forceUpdate2.calledOnce).to.be.true;
 
