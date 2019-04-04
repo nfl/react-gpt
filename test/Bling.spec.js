@@ -163,6 +163,40 @@ describe("Bling", () => {
         );
     });
 
+    it("call pubads API to set non-personalized Ads when npa prop is set", () => {
+        const renderer = new ShallowRenderer();
+        const spy = sinon.stub(Bling._adManager, "pubadsProxy");
+        const expectedParam = {
+            method: "setRequestNonPersonalizedAds",
+            args: [1],
+            resolve: null,
+            reject: null
+        };
+
+        renderer.render(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                npa={true}
+                slotSize={["fluid"]}
+            />
+        );
+
+        expect(spy.calledWith(expectedParam)).to.be.true;
+
+        renderer.unmount();
+        renderer.render(
+            <Bling
+                adUnitPath="/4595/nfl.test.open"
+                npa={false}
+                slotSize={["fluid"]}
+            />
+        );
+
+        expectedParam.args = [0];
+        expect(spy.calledWith(expectedParam)).to.be.true;
+        spy.restore();
+    });
+
     it("fires once event", done => {
         const events = Object.keys(Events).map(key => Events[key]);
 
