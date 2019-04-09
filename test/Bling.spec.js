@@ -163,17 +163,28 @@ describe("Bling", () => {
         );
     });
 
-    it("call pubads API to set non-personalized Ads when npa prop is set", () => {
-        const renderer = new ShallowRenderer();
+    it("call pubads API to set non-personalized Ads when npa prop is set", done => {
         const spy = sinon.stub(Bling._adManager, "pubadsProxy");
-        const expectedParam = {
+        const expectedParamTrue = {
             method: "setRequestNonPersonalizedAds",
             args: [1],
             resolve: null,
             reject: null
         };
+        const expectedParamFalse = {
+            ...expectedParamTrue,
+            args: [0]
+        };
 
-        renderer.render(
+        Bling.once(Events.RENDER, () => {
+            expect(spy.calledWith(expectedParamTrue)).to.be.true;
+            expect(spy.calledWith(expectedParamFalse)).to.be.true;
+            spy.restore();
+            done();
+        });
+
+        // Render once to test with non-personalized ads
+        ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
                 npa={true}
@@ -181,20 +192,14 @@ describe("Bling", () => {
             />
         );
 
-        expect(spy.calledWith(expectedParam)).to.be.true;
-
-        renderer.unmount();
-        renderer.render(
+        // Render a second time to test re-enable personalized ads
+        ReactTestUtils.renderIntoDocument(
             <Bling
                 adUnitPath="/4595/nfl.test.open"
                 npa={false}
                 slotSize={["fluid"]}
             />
         );
-
-        expectedParam.args = [0];
-        expect(spy.calledWith(expectedParam)).to.be.true;
-        spy.restore();
     });
 
     it("fires once event", done => {

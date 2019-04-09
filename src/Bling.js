@@ -394,11 +394,6 @@ class Bling extends Component {
             : Bling._config.viewableThreshold;
     }
 
-    componentWillMount() {
-        const {npa} = this.props;
-        this.handleSetNpaFlag(npa);
-    }
-
     componentDidMount() {
         Bling._adManager.addInstance(this);
         Bling._adManager
@@ -410,7 +405,6 @@ class Bling extends Component {
     componentWillReceiveProps(nextProps) {
         const {propsEqual} = Bling._config;
         const {sizeMapping} = this.props;
-        const {npa} = nextProps;
 
         if (
             (nextProps.sizeMapping || sizeMapping) &&
@@ -418,8 +412,6 @@ class Bling extends Component {
         ) {
             Bling._adManager.removeMQListener(this, nextProps);
         }
-
-        this.handleSetNpaFlag(npa);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -626,9 +618,11 @@ class Bling extends Component {
     }
 
     defineSlot() {
-        const { adUnitPath, outOfPage } = this.props;
+        const { adUnitPath, outOfPage, npa } = this.props;
         const divId = this._divId;
         const slotSize = this.getSlotSize();
+
+        this.handleSetNpaFlag(npa);
 
         if (!this._adSlot) {
             if (outOfPage) {
