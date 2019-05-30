@@ -6,7 +6,7 @@ steps:
     command:
       - npm install
       - npm run lint
-      - npm test
+      - CI=false npm test
     artifact_paths:
       - "./build/**/*"
       - "./coverage/*"
