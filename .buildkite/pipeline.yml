@@ -1,0 +1,13 @@
+run_on: &agents
+  - Env=dev
+
+steps:
+  - label: "Run tests"
+    command:
+      - npm install
+      - npm run lint
+      - npm test
+    artifact_paths:
+      - "./build/**/*"
+      - "./coverage/*"
+    agents: *agents
