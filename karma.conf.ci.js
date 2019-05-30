@@ -6,12 +6,6 @@ module.exports = function (config) {
 
     console.log("running default test on Chrome");
     config.set({
-        customLaunchers: {
-            Chrome_CI: {
-                base: "Chrome",
-                flags: ["--no-sandbox", "--headless", "--verbose"]
-            }
-        },
-        browsers: ["Chrome_CI"]
+        browsers: ["ChromeHeadless"]
     });
 };
