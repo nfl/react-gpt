@@ -1,5 +1,5 @@
 {
-    "name": "react-gpt",
+    "name": "@caradvice/react-gpt",
     "version": "2.0.1",
     "description": "A react display ad component using Google Publisher Tag",
     "main": "lib/index.js",
@@ -7,12 +7,15 @@
     "contributors": [
         {
             "name": "NFL Engineering"
+        },
+        {
+            "name": "CarAdvice.com"
         }
     ],
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/nfl/react-gpt"
+        "url": "https://github.com/caradvice/react-gpt"
     },
     "keywords": [
         "react-gpt",
@@ -22,9 +25,6 @@
         "gpt",
         "google publisher tags"
     ],
-    "bugs": {
-        "url": "https://github.com/nfl/react-gpt/issues"
-    },
     "files": ["*.md", "docs", "es", "src", "dist", "lib"],
     "dependencies": {
         "deep-equal": "^1.0.1",
