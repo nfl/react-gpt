@@ -13,3 +13,13 @@ steps:
     agents: *agents
     env:
       CI: 'true'
+
+  - wait: ~
+    branches: master
+
+  - command:
+    - npm install
+    - npm publish
+    label: Publish to npm
+    branches: master
+    agents: *agents
