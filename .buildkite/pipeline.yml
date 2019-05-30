@@ -6,8 +6,10 @@ steps:
     command:
       - npm install
       - npm run lint
-      - CI=false npm test
+      - npm test
     artifact_paths:
       - "./build/**/*"
       - "./coverage/*"
     agents: *agents
+    env:
+      CI: 'true'
