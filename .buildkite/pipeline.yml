@@ -1,5 +1,6 @@
 run_on: &agents
-  - Env=dev
+  - Realm=dev
+  - BuildkiteAgentVersion=3
 
 steps:
   - label: "Run tests"
