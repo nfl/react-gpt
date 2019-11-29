@@ -1,6 +1,7 @@
 run_on: &agents
   - Realm=dev
   - BuildkiteAgentVersion=3
+  - VPCName=ca-dev-shared-vpc
 
 steps:
   - label: "Run tests"
