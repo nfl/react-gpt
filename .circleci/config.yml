@@ -1,0 +1,118 @@
+---
+version: 2
+jobs:
+  build-test:
+    docker:
+      - image: meliuz/docker-deployer:latest
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      # Docker login to pull private images
+      - run:
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      # Build the image
+      - run:
+          name: Build image
+          command: docker build --tag meliuz/${CIRCLE_PROJECT_REPONAME}:development .
+
+      # Check package version update
+      - run:
+          name: Check package version update
+          command: |
+            if [ "${CIRCLE_BRANCH}" != "master" -a -z "${CIRCLE_TAG}" ]; then
+              ./resources/scripts/check-package-version-update.sh
+            fi
+
+      # Run tests
+      - run:
+          name: Run tests
+          command: make test DOCKER_COMPOSE_ARGS='-f docker-compose.yml -f docker-compose.ci.yml'
+
+  lint:
+    docker:
+      - image: meliuz/docker-linter:latest
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+
+    steps:
+      - checkout
+
+      - run:
+          name: Lint project files
+          command: |
+            docker-entrypoint " \
+              lint-javascript && \
+              lint-json && \
+              lint-markdown && \
+              lint-yaml && \
+              lint-commit origin/master"
+
+  check-security:
+    docker:
+      - image: meliuz/docker-security:latest
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+
+      - run:
+          name: Check security flaws
+          command: docker-entrypoint "check-javascript-security"
+
+  publish-npm-package:
+    docker:
+      - image: meliuz/node:10.15.1
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+      - run:
+          name: Publish npm package
+          command: npm publish
+
+workflows:
+  version: 2
+  meliuz-workflow:
+    jobs:
+      - lint:
+          context: global
+          filters:
+            branches:
+              only: /.*?/
+            tags:
+              only: /.*?/
+      - check-security:
+          context: global
+          requires:
+            - lint
+          filters:
+            branches:
+              only: /.*?/
+            tags:
+              only: /.*?/
+      - build-test:
+          requires:
+            - check-security
+          filters:
+            branches:
+              only: /.*?/
+            tags:
+              only: /.*?/
+      - publish-npm-package:
+          context: global
+          requires:
+            - build-test
+          filters:
+            branches:
+              ignore: /.*?/
+            tags:
+              only: /^[0-9]+(\.[0-9]+){2}$/
