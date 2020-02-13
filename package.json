@@ -42,6 +42,8 @@
         "throttle-debounce": "^1.0.1"
     },
     "devDependencies": {
+        "babel": "^6.23.0",
+        "babel-cli": "^6.26.0",
         "babel-core": "^6.5.1",
         "babel-eslint": "^8.0.0",
         "babel-loader": "^6.2.3",
@@ -92,6 +94,7 @@
         "sinon": "^1.17.2",
         "sinon-chai": "^2.8.0",
         "webpack": "^4.41.6",
+        "webpack-cli": "^3.3.11",
         "webpack-dev-middleware": "^1.5.1",
         "webpack-dev-server": "^3.10.3"
     },

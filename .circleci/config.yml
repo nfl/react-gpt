@@ -13,7 +13,17 @@ jobs:
       - run:
           name: Check security flaws
           command: docker-entrypoint "check-javascript-security"
-
+  build:
+    docker:
+      - image: meliuz/node:10.15.1
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: npm build
   publish-npm-package:
     docker:
       - image: meliuz/node:10.15.1
@@ -37,8 +47,18 @@ workflows:
               only: /.*?/
             tags:
               only: /.*?/
+      - build:
+          requires:
+            - check-security
+          filters:
+            branches:
+              only: /.*?/
+            tags:
+              only: /.*?/
       - publish-npm-package:
           context: global
+          requires:
+            - build
           filters:
             branches:
               ignore: /.*?/
