@@ -114,7 +114,7 @@
         "lint": "eslint --fix src test examples",
         "start": "npm run build && env BABEL_ENV=examples node examples/server/index.js",
         "pretest": "npm run build",
-        "prepublish": "npm run build && npm run build:es && npm run build:umd && npm run build:umd:min",
+        "prepare": "npm run build && npm run build:es && npm run build:umd && npm run build:umd:min",
         "test": "npm run lint && karma start",
         "update-apilist": "node ./scripts/updateAPIList.js"
     },
