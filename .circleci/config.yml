@@ -48,6 +48,7 @@ workflows:
             tags:
               only: /.*?/
       - build:
+          context: global
           requires:
             - check-security
           filters:
