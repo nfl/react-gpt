@@ -23,7 +23,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: npm build
+          command: npm run build
   publish-npm-package:
     docker:
       - image: meliuz/node:10.15.1

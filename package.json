@@ -113,7 +113,7 @@
         "build:compile": "npm run clean && npm run compile",
         "build:es": "BABEL_ENV=es babel --copy-files ./src -d es",
         "build:umd": "NODE_ENV=development webpack src/index.js dist/react-gpt.js",
-        "build": "webpack -p src/index.js --output dist/react-gpt.min.js --mode production",
+        "build": "npm i -D webpack && webpack -p src/index.js --output dist/react-gpt.min.js --mode production",
         "bundlesize": "npm run build:umd:min && bundlesize",
         "clean": "rimraf lib coverage dist lib es",
         "compile": "babel src --out-dir lib",
