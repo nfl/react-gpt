@@ -1,13 +1,18 @@
 {
-  "presets": ["es2015-without-strict", "stage-0", "react"],
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
   "plugins": [
-    "transform-decorators-legacy"
+    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+    "@babel/plugin-proposal-class-properties"
   ],
   "env": {
     "examples": {
       "plugins": [
+        
         ["babel-plugin-webpack-alias", {"config": "./examples/webpack.config.server.js"}]
       ]
-    }
+    } 
   }
 }
