@@ -1,6 +1,6 @@
 {
     "name": "@meliuz/lib-react-gpt",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "A react display ad component using Google Publisher Tag",
     "main": "lib/index.js",
     "jsnext:main": "es/index.js",
