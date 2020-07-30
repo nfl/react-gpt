@@ -1,6 +1,6 @@
 es/
 node_modules/
-lib/
+# lib/
 dist/
 coverage/
 npm-debug.log
