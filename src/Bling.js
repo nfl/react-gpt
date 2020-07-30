@@ -639,7 +639,7 @@ class Bling extends Component {
             }
         }
 
-        this.configureSlot(this._adSlot);
+        this._adSlot && this.configureSlot(this._adSlot);
     }
 
     configureSlot(adSlot, props = this.props) {
