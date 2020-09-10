@@ -125,6 +125,8 @@ class Bling extends Component {
             PropTypes.bool,
             PropTypes.array
         ]),
+        withIAS: PropTypes.func,
+        iaspPubId: PropTypes.string,
         /**
          * An optional flag to indicate whether ads in this slot should be forced to be rendered using a SafeFrame container.
          *
@@ -608,8 +610,25 @@ class Bling extends Component {
     }
 
     renderAd() {
+        const { withIAS, iaspPubId, adUnitPath } = this.props;
+        const divId = this._divId;
+        const slotSize = this.getSlotSize();
+
         this.defineSlot();
-        this.display();
+
+        if (withIAS) {
+          withIAS({
+            diplayAdsCb: this.display,
+            pubId: iaspPubId,
+            adSlotData: {
+              adUnitPath,
+              sizes: slotSize,
+              adSlotId: divId,
+            }
+          })
+        } else {
+          this.display();
+        }
     }
 
     notInViewport(props = this.props, state = this.state) {
