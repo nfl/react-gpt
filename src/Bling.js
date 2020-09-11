@@ -126,7 +126,6 @@ class Bling extends Component {
             PropTypes.array
         ]),
         withIAS: PropTypes.func,
-        iaspPubId: PropTypes.string,
         /**
          * An optional flag to indicate whether ads in this slot should be forced to be rendered using a SafeFrame container.
          *
