@@ -610,16 +610,15 @@ class Bling extends Component {
     }
 
     renderAd() {
-        const { withIAS, iaspPubId, adUnitPath } = this.props;
+        const { displayCallback, adUnitPath } = this.props;
         const divId = this._divId;
         const slotSize = this.getSlotSize();
 
         this.defineSlot();
 
-        if (withIAS) {
-          withIAS({
-            diplayAdsCb: this.display,
-            pubId: iaspPubId,
+        if (displayCallback) {
+          displayCallback({
+            display: this.display,
             adSlotData: {
               adUnitPath,
               sizes: slotSize,
