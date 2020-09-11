@@ -125,7 +125,7 @@ class Bling extends Component {
             PropTypes.bool,
             PropTypes.array
         ]),
-        withIAS: PropTypes.func,
+        displayCallback: PropTypes.func,
         /**
          * An optional flag to indicate whether ads in this slot should be forced to be rendered using a SafeFrame container.
          *
