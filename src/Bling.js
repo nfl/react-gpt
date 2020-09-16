@@ -729,7 +729,7 @@ class Bling extends Component {
                 Bling._adManager.updateCorrelator();
             }
 
-            if (displayCallback) {
+            if (typeof displayCallback === "function") {
                 displayCallback({
                     display: () => Bling._adManager.googletag.display(divId),
                     adSlotData: {
