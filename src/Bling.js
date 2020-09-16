@@ -734,7 +734,7 @@ class Bling extends Component {
                     display: () => Bling._adManager.googletag.display(divId),
                     adSlotData: {
                         adUnitPath,
-                        sizes: slotSize,
+                        size: slotSize,
                         adSlotId: divId
                     }
                 });
