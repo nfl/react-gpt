@@ -18,14 +18,6 @@ jobs:
           node-version: 10
           registry-url: https://npm.pkg.github.com/
           scope: '@dennisinteractive'
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@v1.0.1
-      - name: Start chrome
-        run: |
-          export CHROME_BIN=chromium-browser
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
       - name: Install dependencies
         run: yarn install
       - name: Run Tests
