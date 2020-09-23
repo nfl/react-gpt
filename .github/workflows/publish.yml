@@ -8,7 +8,7 @@ on:
     types: [created]
 
 jobs:
-  publish-gpr:
+  publish-github-registry:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
