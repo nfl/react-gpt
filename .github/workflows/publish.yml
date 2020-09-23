@@ -4,8 +4,7 @@
 name: React GPT Forked Package
 
 on:
-  release:
-    types: [created]
+  push
 
 jobs:
   publish-gpr:
