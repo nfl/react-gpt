@@ -19,6 +19,11 @@ jobs:
           node-version: 10
           registry-url: https://npm.pkg.github.com/
           scope: '@dennisinteractive'
+      - name: Run Custom Script
+        env:
+          CHROME_BIN: 'chromium-browser'
+          DISPLAY: ':99.0'
+        run: sh -e /etc/init.d/xvfb start
       - name: Install dependencies
         run: yarn install
       - name: Run Tests
