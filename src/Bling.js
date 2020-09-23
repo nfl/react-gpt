@@ -717,8 +717,6 @@ class Bling extends Component {
         const adSlot = this._adSlot;
         const slotSize = this.getSlotSize();
 
-        console.log("hi ilias", displayCallback);
-
         if (content) {
             Bling._adManager.googletag.content().setContent(adSlot, content);
         } else {
