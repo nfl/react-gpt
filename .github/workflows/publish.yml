@@ -4,7 +4,8 @@
 name: React GPT Forked Package
 
 on:
-  push
+  release:
+    types: [created]
 
 jobs:
   publish-gpr:
@@ -21,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Run Tests
-        env:
-          CHROME_BIN: 'chromium-browser'
-          DISPLAY: ':99.0'
         run: yarn test
       - name: Build Test Package
         if: contains(github.ref, 'test')
