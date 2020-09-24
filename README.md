@@ -111,13 +111,6 @@ class Application extends React.Component {
 }
 ```
 
-
-## IAS and Amazon Header Bidding integration 
-
-We have modified the react gpt forked package to instead of running googletag.display, it will take a callback that will first run some other code that is supposed to run before googletag.display and will then run the display call.
-
-In our case the code that needs to run prior to the display call is the Amazon Header bidder and the IAS callback.
-
 ## API and Documentation
 
 * [API](/docs/api/) Review the `React GPT` API
