@@ -18,6 +18,7 @@ A React component which renders [GPT](https://support.google.com/dfp_sb/answer/1
 - `content`(optional) - An optional HTML content for the slot. If specified, the ad will render with the HTML content using content service.
 - `clickUrl`(optional) - An optional click through URL. If specified, any landing page URL associated with the creative that is served is overridden.
 - `categoryExclusion`(optional) - An optional string or an array of string which specifies a page-level ad category exclusion for the given label name.
+- `displayCallback`(optional) - An optional callback function that gets passed from the siteapp. The callback allows to run code before `googletag.display()` (e.g. ias integration, amazon header bidding etc) and once this code is run, `googletag.display()` is eventually run.
 - `attributes`(optional) - An optional map of key-value pairs for an AdSense attribute on a particular ad slot. see [the list of supported key value](https://developers.google.com/doubleclick-gpt/adsense_attributes#adsense_parameters.googletag.Slot)
 - `collapseEmptyDiv`(optional) - An optional flag to indicate whether an empty ad should be collapsed or not.
 - `forceSafeFrame`(optional) - An optional flag to indicate whether ads in this slot should be forced to be rendered using a SafeFrame container.
