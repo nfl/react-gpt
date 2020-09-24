@@ -139,14 +139,6 @@ describe("createManager", () => {
             });
     });
 
-    it("handles gpt existence", done => {
-        adManager = createManager();
-        adManager.load("//www.google.com/jsapi").catch(err => {
-            expect(err.message).to.equal("window.googletag is not available");
-            done();
-        });
-    });
-
     it("returns gpt version", () => {
         expect(adManager.getGPTVersion()).to.equal(gptVersion);
     });

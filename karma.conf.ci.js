@@ -1,17 +1,7 @@
-/* eslint-disable camelcase */
-module.exports = function (config) {
-    config.set({
-        singleRun: true
-    });
+process.env.CHROME_BIN = require("puppeteer").executablePath();
 
-    console.log("running default test on Chrome");
+module.exports = function(config) {
     config.set({
-        customLaunchers: {
-            Chrome_CI: {
-                base: "Chrome",
-                flags: ["--no-sandbox"]
-            }
-        },
-        browsers: ["Chrome_CI"]
+        browsers: ["ChromeHeadless"]
     });
 };
