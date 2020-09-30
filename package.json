@@ -77,7 +77,7 @@
         "prettier": "^1.9.2",
         "prop-types": "^15.5.10",
         "querystring": "^0.2.0",
-        "radium": "^0.18.1",
+        "radium": "^0.26.1",
         "react": "^16.0.0",
         "react-addons-test-utils": "^15.0.1",
         "react-dom": "^16.0.0",
