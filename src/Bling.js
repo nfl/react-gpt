@@ -727,6 +727,12 @@ class Bling extends Component {
                 Bling._adManager.updateCorrelator();
             }
 
+            if (typeof window !== "undefined") {
+                if (window.location.search.includes("thisisaniastest")) {
+                    console.log("IAS CODE IS PRESENT");
+                }
+            }
+
             if (typeof displayCallback === "function") {
                 displayCallback({
                     display: () => Bling._adManager.googletag.display(divId),
