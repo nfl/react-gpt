@@ -605,7 +605,7 @@ class Bling extends Component {
             slotSize = sizeMapping[0] && sizeMapping[0].slot;
         }
 
-        return slotSize;
+        return JSON.stringify(slotSize) === "[0,0]" ? [] : slotSize;
     }
 
     renderAd() {
