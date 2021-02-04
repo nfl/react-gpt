@@ -46,7 +46,7 @@
         "babel-preset-stage-0": "^6.5.0",
         "babel-register": "^6.7.2",
         "bundlesize": "^0.14.4",
-        "chai": "^3.4.1",
+        "chai": "^4.3.0",
         "codecov.io": "^0.1.6",
         "commitizen": "^2.8.1",
         "conventional-changelog-cli": "^1.2.0",
