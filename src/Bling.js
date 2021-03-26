@@ -440,10 +440,9 @@ class Bling extends Component {
             this.props,
             nextProps
         );
-        const shouldRender = !propsEqual(
-            reRenderProps.props,
-            reRenderProps.nextProps
-        );
+        const shouldRender =
+            !this._adSlot ||
+            !propsEqual(reRenderProps.props, reRenderProps.nextProps);
         const shouldRefresh =
             !shouldRender &&
             !propsEqual(refreshableProps.props, refreshableProps.nextProps);
