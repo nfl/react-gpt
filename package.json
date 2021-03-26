@@ -88,7 +88,7 @@
         "sinon-chai": "^2.8.0",
         "webpack": "^1.4.13",
         "webpack-dev-middleware": "^1.5.1",
-        "webpack-dev-server": "^1.14.1"
+        "webpack-dev-server": "^3.1.11"
     },
     "peerDependencies": {
         "prop-types": "^15.5.10",
