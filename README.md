@@ -30,7 +30,7 @@ A [React](https://github.com/facebook/react) component for [Google Publisher Tag
 ## Installation
 
 ```
-$ yarn react-gpt
+$ yarn add react-gpt
 ```
 
 React GPT depends on [Promise](https://promisesaplus.com/) to be available in browser. If your application support the browser which doesn't support Promise, please include the polyfill.
