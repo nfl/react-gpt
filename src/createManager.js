@@ -363,7 +363,11 @@ export class AdManager extends EventEmitter {
                 instance.defineSlot();
                 const adSlot = instance.adSlot;
 
-                if (adSlot && adSlot.hasOwnProperty("getServices")) {
+                if (
+                    adSlot &&
+                    adSlot.getServices &&
+                    typeof adSlot.getServices === "function"
+                ) {
                     const services = adSlot.getServices();
                     if (!hasPubAdsService) {
                         hasPubAdsService =
