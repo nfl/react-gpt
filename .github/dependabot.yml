@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: chai
+    versions:
+    - 4.2.0
+    - 4.3.0
+    - 4.3.1
+    - 4.3.3
+  - dependency-name: handlebars
+    versions:
+    - 4.7.6
+  - dependency-name: eslint
+    versions:
+    - 4.19.1
