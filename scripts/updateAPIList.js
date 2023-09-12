@@ -48,7 +48,7 @@ phantom.create().then(function (ph) {
             }
         });
         page.open(process.cwd() + "/scripts/empty.html").then(function () {
-            page.includeJs("http://www.googletagservices.com/tag/js/gpt.js").then(function () {
+            page.includeJs("https://securepubads.g.doubleclick.net/tag/js/gpt.js").then(function () {
                 setTimeout(function () {
                     page.evaluate(function () {
                         var EXCLUDES = ["constructor"].concat(Object.getOwnPropertyNames(Object.getPrototypeOf({})));

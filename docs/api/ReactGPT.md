@@ -60,7 +60,7 @@ React GPT makes sure that those APIs are called right before the service is enab
 
 Global configuration applies to the all React GPT instances. You can set the following configuration through `Bling.configure(config)`.
 
-- `seedFileUrl` - An optional string for GPT seed file url to override. Default value is `//www.googletagservices.com/tag/js/gpt.js`.
+- `seedFileUrl` - An optional string for GPT seed file url to override. Default value is `//securepubads.g.doubleclick.net/tag/js/gpt.js`.
 - `renderWhenViewable` - An optional flag to indicate whether an ad should only render when it's fully in the viewport area. Default is `true`.
 - `viewableThreshold` - An optional number to indicate how much percentage of an ad area needs to be in a viewable area before rendering. Default value is `0.5`. Acceptable range is between `0` and `1.0`.
 - `filterProps` - An optional function to create an object with filtered current props and next props for a given keys to perform equality check. Default value is [`filterProps`](../../src/utils/filterProps.js).
