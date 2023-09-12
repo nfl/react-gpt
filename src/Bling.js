@@ -1,5 +1,5 @@
 /* eslint-disable react/sort-comp */
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import invariant from "invariant";
@@ -7,7 +7,7 @@ import deepEqual from "deep-equal";
 import hoistStatics from "hoist-non-react-statics";
 import Events from "./Events";
 import filterPropsSimple from "./utils/filterProps";
-import { createManager, pubadsAPI } from "./createManager";
+import {createManager, pubadsAPI} from "./createManager";
 /**
  * An Ad Component using Google Publisher Tags.
  * This component should work standalone w/o context.
@@ -417,7 +417,7 @@ class Bling extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         // if adUnitPath changes, need to create a new slot, re-render
         // otherwise, just refresh
-        const { scriptLoaded, inViewport } = nextState;
+        const {scriptLoaded, inViewport} = nextState;
         const notInViewport = this.notInViewport(nextProps, nextState);
         const inViewportChanged = this.state.inViewport !== inViewport;
         const isScriptLoaded = this.state.scriptLoaded !== scriptLoaded;
@@ -429,7 +429,7 @@ class Bling extends Component {
             return true;
         }
 
-        const { filterProps, propsEqual } = Bling._config;
+        const {filterProps, propsEqual} = Bling._config;
         const refreshableProps = filterProps(
             Bling.refreshableProps,
             this.props,
@@ -494,12 +494,12 @@ class Bling extends Component {
     }
 
     onScriptLoaded() {
-        const { onScriptLoaded } = this.props;
+        const {onScriptLoaded} = this.props;
 
         if (this.getRenderWhenViewable()) {
             this.foldCheck();
         }
-        this.setState({ scriptLoaded: true }, onScriptLoaded); // eslint-disable-line react/no-did-mount-set-state
+        this.setState({scriptLoaded: true}, onScriptLoaded); // eslint-disable-line react/no-did-mount-set-state
     }
 
     onScriptError(err) {
@@ -537,7 +537,7 @@ class Bling extends Component {
             this.viewableThreshold
         );
         if (inViewport) {
-            this.setState({ inViewport: true });
+            this.setState({inViewport: true});
         }
     }
 
@@ -612,12 +612,12 @@ class Bling extends Component {
     }
 
     notInViewport(props = this.props, state = this.state) {
-        const { inViewport } = state;
+        const {inViewport} = state;
         return this.getRenderWhenViewable(props) && !inViewport;
     }
 
     defineSlot() {
-        const { adUnitPath, outOfPage, npa } = this.props;
+        const {adUnitPath, outOfPage, npa} = this.props;
         const divId = this._divId;
         const slotSize = this.getSlotSize();
 
@@ -710,7 +710,7 @@ class Bling extends Component {
     }
 
     display() {
-        const { content } = this.props;
+        const {content} = this.props;
         const divId = this._divId;
         const adSlot = this._adSlot;
 
@@ -755,8 +755,8 @@ class Bling extends Component {
     }
 
     render() {
-        const { scriptLoaded } = this.state;
-        const { id, outOfPage, style } = this.props;
+        const {scriptLoaded} = this.state;
+        const {id, outOfPage, style} = this.props;
         const shouldNotRender = this.notInViewport(this.props, this.state);
 
         if (!scriptLoaded || shouldNotRender) {
@@ -821,8 +821,7 @@ class Bling extends Component {
 export default hoistStatics(
     Bling,
     pubadsAPI.reduce((api, method) => {
-        api[method] = (...args) =>
-            Bling._adManager.pubadsProxy({ method, args });
+        api[method] = (...args) => Bling._adManager.pubadsProxy({method, args});
         return api;
     }, {})
 );
